@@ -1,0 +1,28 @@
+#Application Configuration
+server:
+  port: 8090
+
+spring:
+  application:
+    name: project-management
+  datasource:
+    url: ${URL}
+    username: ${USER}
+    password: ${PASSWORD}
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+jwt:
+  secret: ${KEYSECRET_SECURITY:eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWUsImlhdCI6MTUxNjIzOTAyMn0.nZU_gPcMXkWpkCUpJceSxS7lSickF0tTImHhAR949Z-Nt69LgW8G6lid-mqd9B579tYM8C4FN2jdhR2VRMsjtA}
+  expiration: ${EXPIRE_DAYS_SECURITY:3600000}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+appDescription: "Project Management"
+appVersion: "1.0.0"

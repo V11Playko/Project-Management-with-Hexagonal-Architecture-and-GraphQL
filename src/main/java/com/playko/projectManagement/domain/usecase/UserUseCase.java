@@ -1,0 +1,30 @@
+package com.playko.projectManagement.domain.usecase;
+
+import com.playko.projectManagement.domain.api.IUserServicePort;
+import com.playko.projectManagement.domain.model.RoleModel;
+import com.playko.projectManagement.domain.model.UserModel;
+import com.playko.projectManagement.domain.spi.IAuthPasswordEncoderPort;
+import com.playko.projectManagement.domain.spi.IRolePersistencePort;
+import com.playko.projectManagement.domain.spi.IUserPersistencePort;
+import com.playko.projectManagement.shared.constants.RolesId;
+
+public class UserUseCase implements IUserServicePort {
+    private final IUserPersistencePort userPersistencePort;
+    private final IRolePersistencePort rolePersistencePort;
+    private final IAuthPasswordEncoderPort authPasswordEncoderPort;
+
+    public UserUseCase(IUserPersistencePort userPersistencePort, IRolePersistencePort rolePersistencePort, IAuthPasswordEncoderPort authPasswordEncoderPort) {
+        this.userPersistencePort = userPersistencePort;
+        this.rolePersistencePort = rolePersistencePort;
+        this.authPasswordEncoderPort = authPasswordEncoderPort;
+    }
+
+    @Override
+    public void saveUser(UserModel userModel) {
+        RoleModel role = rolePersistencePort.getRole(RolesId.USER_ROLE_ID);
+        userModel.setRoleModel(role);
+        userModel.setPassword(authPasswordEncoderPort.encodePassword(userModel.getPassword()));
+
+        userPersistencePort.saveUser(userModel);
+    }
+}

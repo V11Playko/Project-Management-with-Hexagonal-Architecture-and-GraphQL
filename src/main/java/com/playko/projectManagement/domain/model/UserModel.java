@@ -11,14 +11,14 @@ public class UserModel {
     private String email;
     private String password;
     private RoleModel roleModel;
-    private String team;
+    private TeamModel team;
 
     public String HashedPassword(String password) {
         String hashedPassword = BCrypt.hashpw(this.password, BCrypt.gensalt());
         return hashedPassword;
     }
 
-    public UserModel(Long id, String name, String surname, String dniNumber, String phone, String email, String password, RoleModel roleModel, String team) {
+    public UserModel(Long id, String name, String surname, String dniNumber, String phone, String email, String password, RoleModel roleModel, TeamModel team) {
         this.id = id;
         this.name = name;
         this.surname = surname;
@@ -94,11 +94,11 @@ public class UserModel {
         this.roleModel = roleModel;
     }
 
-    public String getTeam() {
+    public TeamModel getTeam() {
         return team;
     }
 
-    public void setTeam(String team) {
+    public void setTeam(TeamModel team) {
         this.team = team;
     }
 }

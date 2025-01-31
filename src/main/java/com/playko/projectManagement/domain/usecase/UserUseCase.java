@@ -8,6 +8,8 @@ import com.playko.projectManagement.domain.spi.IRolePersistencePort;
 import com.playko.projectManagement.domain.spi.IUserPersistencePort;
 import com.playko.projectManagement.shared.constants.RolesId;
 
+import java.util.List;
+
 public class UserUseCase implements IUserServicePort {
     private final IUserPersistencePort userPersistencePort;
     private final IRolePersistencePort rolePersistencePort;
@@ -20,11 +22,26 @@ public class UserUseCase implements IUserServicePort {
     }
 
     @Override
+    public UserModel findByEmail(String email) {
+        return userPersistencePort.findByEmail(email);
+    }
+
+    @Override
+    public List<UserModel> findAllUsers() {
+        return userPersistencePort.findAllUsers();
+    }
+
+    @Override
     public void saveUser(UserModel userModel) {
         RoleModel role = rolePersistencePort.getRole(RolesId.USER_ROLE_ID);
         userModel.setRoleModel(role);
         userModel.setPassword(authPasswordEncoderPort.encodePassword(userModel.getPassword()));
 
         userPersistencePort.saveUser(userModel);
+    }
+
+    @Override
+    public void updateUser(Long id, UserModel userModel) {
+        userPersistencePort.updateUser(id, userModel);
     }
 }

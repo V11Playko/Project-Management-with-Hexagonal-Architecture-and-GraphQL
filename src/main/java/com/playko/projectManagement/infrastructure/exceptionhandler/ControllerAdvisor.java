@@ -1,5 +1,9 @@
 package com.playko.projectManagement.infrastructure.exceptionhandler;
 
+import com.playko.projectManagement.infrastructure.exception.NoUsersFoundException;
+import com.playko.projectManagement.infrastructure.exception.UnauthorizedException;
+import com.playko.projectManagement.infrastructure.exception.UserAlreadyExistsException;
+import com.playko.projectManagement.infrastructure.exception.UserNotFoundException;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
 import org.springframework.http.HttpStatus;
@@ -10,9 +14,16 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
+
+import static com.playko.projectManagement.shared.constants.Exceptions.RESPONSE_MESSAGE_KEY;
+import static com.playko.projectManagement.shared.constants.Exceptions.UNAUTHORIZED_MESSAGE;
+import static com.playko.projectManagement.shared.constants.Exceptions.USERS_NOT_FOUND_MESSAGE;
+import static com.playko.projectManagement.shared.constants.Exceptions.USER_ALREADY_EXISTS_MESSAGE;
+import static com.playko.projectManagement.shared.constants.Exceptions.USER_NOT_FOUND_MESSAGE;
 
 @ControllerAdvice
 public class ControllerAdvisor {
@@ -54,5 +65,32 @@ public class ControllerAdvisor {
             errors.put(fieldName, errorMessage);
         });
         return ResponseEntity.badRequest().body(errors);
+    }
+
+    @ExceptionHandler(UnauthorizedException.class)
+    public ResponseEntity<Map<String, String>> unauthorizedException(
+            UnauthorizedException unauthorizedException) {
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                .body(Collections.singletonMap(RESPONSE_MESSAGE_KEY, UNAUTHORIZED_MESSAGE));
+    }
+
+    @ExceptionHandler(NoUsersFoundException.class)
+    public ResponseEntity<Map<String, String>> noUsersFoundException(
+            NoUsersFoundException noUsersFoundException) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .body(Collections.singletonMap(RESPONSE_MESSAGE_KEY, USERS_NOT_FOUND_MESSAGE));
+    }
+
+    @ExceptionHandler(UserNotFoundException.class)
+    public ResponseEntity<Map<String, String>> userNotFoundException(
+            UserNotFoundException userNotFoundException) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .body(Collections.singletonMap(RESPONSE_MESSAGE_KEY, USER_NOT_FOUND_MESSAGE));
+    }
+    @ExceptionHandler(UserAlreadyExistsException.class)
+    public ResponseEntity<Map<String, String>> userAlreadyExistsException(
+            UserAlreadyExistsException userAlreadyExistsException) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(Collections.singletonMap(RESPONSE_MESSAGE_KEY, USER_ALREADY_EXISTS_MESSAGE));
     }
 }

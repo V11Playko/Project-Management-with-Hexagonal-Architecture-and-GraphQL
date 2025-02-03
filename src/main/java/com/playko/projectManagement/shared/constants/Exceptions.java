@@ -21,4 +21,9 @@ public class Exceptions {
     /**
      * Mensajes de excepciones
      */
+    public static final String UNAUTHORIZED_MESSAGE = "No tienes permiso para acceder a este recurso.";
+    public static final String USER_ALREADY_EXISTS_MESSAGE = "Este correo ya esta en uso.";
+    public static final String USER_NOT_FOUND_MESSAGE = "Usuario no encontrado.";
+    public static final String USERS_NOT_FOUND_MESSAGE= "Usuarios no encontrados.";
+
 }

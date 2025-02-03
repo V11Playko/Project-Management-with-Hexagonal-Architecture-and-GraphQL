@@ -53,4 +53,9 @@ public class UserHandler implements IUserHandler {
         userServicePort.updateUser(id,existingUser);
     }
 
+    @Override
+    public void deleteUser(Long id) {
+        userServicePort.deleteUser(id);
+    }
+
 }

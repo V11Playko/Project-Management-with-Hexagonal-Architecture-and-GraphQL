@@ -44,4 +44,9 @@ public class UserUseCase implements IUserServicePort {
     public void updateUser(Long id, UserModel userModel) {
         userPersistencePort.updateUser(id, userModel);
     }
+
+    @Override
+    public void deleteUser(Long id) {
+        userPersistencePort.deleteUser(id);
+    }
 }

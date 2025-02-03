@@ -11,4 +11,5 @@ public interface IUserHandler {
     List<UserResponseDto> findAllUsers();
     void saveUser(UserRequestDto userRequestDto);
     void updateUser(Long id, UserUpdateRequestDto userUpdateRequestDto);
+    void deleteUser(Long id);
 }

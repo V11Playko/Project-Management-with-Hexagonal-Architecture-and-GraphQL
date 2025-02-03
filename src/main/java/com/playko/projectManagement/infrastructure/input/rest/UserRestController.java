@@ -12,6 +12,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -33,7 +34,7 @@ public class UserRestController {
             @ApiResponse(responseCode = "201", description = "User created", content = @Content),
             @ApiResponse(responseCode = "409", description = "User already exists", content = @Content)
     })
-    @PostMapping("/")
+    @PostMapping("/saveUser")
     public ResponseEntity<Void> saveUser(@Valid @RequestBody UserRequestDto userRequestDto){
         userHandler.saveUser(userRequestDto);
         return new ResponseEntity<>(HttpStatus.CREATED);
@@ -44,7 +45,7 @@ public class UserRestController {
             @ApiResponse(responseCode = "200", description = "List of users retrieved", content = @Content),
             @ApiResponse(responseCode = "204", description = "No users found", content = @Content)
     })
-    @GetMapping("/")
+    @GetMapping("/allUsers")
     public ResponseEntity<List<UserResponseDto>> getAllUsers() {
         List<UserResponseDto> users = userHandler.findAllUsers();
         return new ResponseEntity<>(users, HttpStatus.OK);
@@ -55,7 +56,7 @@ public class UserRestController {
             @ApiResponse(responseCode = "200", description = "User retrieved successfully", content = @Content),
             @ApiResponse(responseCode = "404", description = "User not found", content = @Content)
     })
-    @GetMapping("/{email}")
+    @GetMapping("getUser/{email}")
     public ResponseEntity<UserResponseDto> getUserByEmail(@PathVariable String email) {
         UserResponseDto user = userHandler.findByEmail(email);
         return new ResponseEntity<>(user, HttpStatus.OK);
@@ -66,7 +67,7 @@ public class UserRestController {
             @ApiResponse(responseCode = "200", description = "User updated successfully", content = @Content),
             @ApiResponse(responseCode = "404", description = "User not found", content = @Content)
     })
-    @PutMapping("/{id}")
+    @PutMapping("/updateUser/{id}")
     public ResponseEntity<Void> updateUser(
             @PathVariable Long id,
             @Valid @RequestBody UserUpdateRequestDto userUpdateRequestDto) {
@@ -74,4 +75,14 @@ public class UserRestController {
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
+    @Operation(summary = "Delete user")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "User delete", content = @Content),
+            @ApiResponse(responseCode = "409", description = "User already exists", content = @Content)
+    })
+    @DeleteMapping("/deleteUser/{id}")
+    public ResponseEntity<Void> deleteUser(@PathVariable Long id){
+        userHandler.deleteUser(id);
+        return ResponseEntity.status(HttpStatus.OK).build();
+    }
 }

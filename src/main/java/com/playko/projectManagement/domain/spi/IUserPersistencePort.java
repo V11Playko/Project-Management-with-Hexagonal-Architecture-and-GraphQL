@@ -9,4 +9,5 @@ public interface IUserPersistencePort {
     List<UserModel> findAllUsers();
     void saveUser(UserModel userModel);
     void updateUser(Long id, UserModel userModel);
+    void deleteUser(Long id);
 }

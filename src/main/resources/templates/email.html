@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title style="font-weight: bold; color: black;">Gestion de proyectos</title>
+    <style type="text/css">
+        /* Estilo para el cuerpo del correo */
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #ffffff; /* Fondo blanco */
+            color: black; /* Color de texto negro */
+        }
+
+        /* Estilo para el párrafo */
+        p {
+            margin: 0;
+            color: black; /* Texto negro */
+        }
+
+        /* Estilo para el título */
+        h1 {
+            font-weight: bold; /* Negrita */
+            color: black; /* Color de texto negro */
+        }
+
+        /* Estilos adicionales */
+        /* Aquí puedes agregar más estilos según sea necesario */
+    </style>
+</head>
+<body>
+<div>
+    <img src="http://imgfz.com.png" alt="Imagen" style="width: 100%; max-width: 600px;">
+</div>
+<div>
+    <!-- Utiliza un elemento h1 para el título -->
+    <h1>UFPS</h1>
+    <!-- Utiliza un párrafo para el contenido del mensaje -->
+    <p th:text="${message}"></p>
+</div>
+</body>
+</html>

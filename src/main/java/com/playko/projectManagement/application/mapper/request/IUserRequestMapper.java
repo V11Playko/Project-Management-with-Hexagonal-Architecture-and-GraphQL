@@ -13,5 +13,6 @@ public interface IUserRequestMapper {
 
     @Mapping(target = "roleModel.name", source = "nameRole")
     @Mapping(target = "roleModel.description", source = "descriptionRole")
+    @Mapping(target = "team.name", source = "team")
     UserModel toUserRequest(UserRequestDto user);
 }

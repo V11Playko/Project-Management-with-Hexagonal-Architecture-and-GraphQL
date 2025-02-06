@@ -23,10 +23,7 @@ public class UserJpaAdapter implements IUserPersistencePort {
 
     @Override
     public UserModel findByEmail(String email) {
-        UserEntity userEntity = userRepository.findByEmail(email);
-        if (userEntity == null) {
-            throw new UserNotFoundException();
-        }
+        UserEntity userEntity = userRepository.findByEmail(email).orElseThrow(UserNotFoundException::new);
         return userEntityMapper.toUserModel(userEntity);
     }
 
@@ -41,7 +38,7 @@ public class UserJpaAdapter implements IUserPersistencePort {
 
     @Override
     public void saveUser(UserModel userModel) {
-        if (userRepository.findByEmail(userModel.getEmail()) == null) {
+        if (userRepository.findByEmail(userModel.getEmail()).isEmpty()) {
             throw new UserAlreadyExistsException();
         }
         UserEntity userEntity = userEntityMapper.toEntity(userModel);
@@ -62,10 +59,7 @@ public class UserJpaAdapter implements IUserPersistencePort {
     public void deleteUser(Long id) {
         String correoAutenticado = obtenerCorreoDelToken();
 
-        UserEntity authenticatedUser = userRepository.findByEmail(correoAutenticado);
-        if (authenticatedUser == null) {
-            throw new UserNotFoundException();
-        }
+        UserEntity authenticatedUser = userRepository.findByEmail(correoAutenticado).orElseThrow(UserNotFoundException::new);
 
         userRepository.findById(id)
                 .orElseThrow(() -> new UserNotFoundException());

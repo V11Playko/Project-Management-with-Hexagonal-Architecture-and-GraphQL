@@ -25,5 +25,6 @@ public class Exceptions {
     public static final String USER_ALREADY_EXISTS_MESSAGE = "Este correo ya esta en uso.";
     public static final String USER_NOT_FOUND_MESSAGE = "Usuario no encontrado.";
     public static final String USERS_NOT_FOUND_MESSAGE= "Usuarios no encontrados.";
+    public static final String TEAM_NOT_FOUND_MESSAGE= "Team no encontrado.";
 
 }

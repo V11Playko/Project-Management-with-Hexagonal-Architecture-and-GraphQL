@@ -1,6 +1,7 @@
 package com.playko.projectManagement.infrastructure.input.rest;
 
 import com.playko.projectManagement.application.dto.request.AddUserToTeamRequestDto;
+import com.playko.projectManagement.application.dto.request.RemoveUserFromTeamRequestDto;
 import com.playko.projectManagement.application.dto.request.TeamRequestDto;
 import com.playko.projectManagement.application.handler.ITeamHandler;
 import io.swagger.v3.oas.annotations.Operation;
@@ -11,6 +12,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -45,4 +47,17 @@ public class TeamRestController {
         teamHandler.addUserToTeam(addUserToTeamRequestDto.getTeamId(), addUserToTeamRequestDto.getEmailUser());
         return new ResponseEntity<>(HttpStatus.OK);
     }
+
+    @Operation(summary = "Remove a user from the team")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "User removed from the team", content = @Content),
+            @ApiResponse(responseCode = "404", description = "Team or User not found", content = @Content),
+            @ApiResponse(responseCode = "400", description = "Invalid request", content = @Content)
+    })
+    @DeleteMapping("/removeUserFromTeam")
+    public ResponseEntity<Void> removeUserFromTeam(@Valid @RequestBody RemoveUserFromTeamRequestDto removeUserFromTeamRequestDto) {
+        teamHandler.removeUserFromTeam(removeUserFromTeamRequestDto.getTeamId(), removeUserFromTeamRequestDto.getEmailUser());
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
 }

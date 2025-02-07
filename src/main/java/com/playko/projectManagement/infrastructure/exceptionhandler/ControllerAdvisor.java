@@ -1,9 +1,11 @@
 package com.playko.projectManagement.infrastructure.exceptionhandler;
 
 import com.playko.projectManagement.infrastructure.exception.NoUsersFoundException;
+import com.playko.projectManagement.infrastructure.exception.TeamNotFoundException;
 import com.playko.projectManagement.infrastructure.exception.UnauthorizedException;
 import com.playko.projectManagement.infrastructure.exception.UserAlreadyExistsException;
 import com.playko.projectManagement.infrastructure.exception.UserNotFoundException;
+import com.playko.projectManagement.infrastructure.exception.UserNotInTeamException;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
 import org.springframework.http.HttpStatus;
@@ -20,9 +22,11 @@ import java.util.Map;
 import java.util.Set;
 
 import static com.playko.projectManagement.shared.constants.Exceptions.RESPONSE_MESSAGE_KEY;
+import static com.playko.projectManagement.shared.constants.Exceptions.TEAM_NOT_FOUND_MESSAGE;
 import static com.playko.projectManagement.shared.constants.Exceptions.UNAUTHORIZED_MESSAGE;
 import static com.playko.projectManagement.shared.constants.Exceptions.USERS_NOT_FOUND_MESSAGE;
 import static com.playko.projectManagement.shared.constants.Exceptions.USER_ALREADY_EXISTS_MESSAGE;
+import static com.playko.projectManagement.shared.constants.Exceptions.USER_NOT_FOUND_IN_TEAM_MESSAGE;
 import static com.playko.projectManagement.shared.constants.Exceptions.USER_NOT_FOUND_MESSAGE;
 
 @ControllerAdvice
@@ -92,5 +96,18 @@ public class ControllerAdvisor {
             UserAlreadyExistsException userAlreadyExistsException) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .body(Collections.singletonMap(RESPONSE_MESSAGE_KEY, USER_ALREADY_EXISTS_MESSAGE));
+    }
+
+    @ExceptionHandler(TeamNotFoundException.class)
+    public ResponseEntity<Map<String, String>> teamNotFoundException(
+            TeamNotFoundException teamNotFoundException) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .body(Collections.singletonMap(RESPONSE_MESSAGE_KEY, TEAM_NOT_FOUND_MESSAGE));
+    }
+    @ExceptionHandler(UserNotInTeamException.class)
+    public ResponseEntity<Map<String, String>> userNotInTeamException(
+            UserNotInTeamException userNotInTeamException) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .body(Collections.singletonMap(RESPONSE_MESSAGE_KEY, USER_NOT_FOUND_IN_TEAM_MESSAGE));
     }
 }

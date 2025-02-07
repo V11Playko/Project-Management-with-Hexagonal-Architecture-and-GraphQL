@@ -25,4 +25,9 @@ public class TeamHandler implements ITeamHandler {
     public void addUserToTeam(Long teamId, String emailUser) {
         teamServicePort.addUserToTeam(teamId, emailUser);
     }
+
+    @Override
+    public void removeUserFromTeam(Long teamId, String emailUser) {
+        teamServicePort.removeUserFromTeam(teamId, emailUser);
+    }
 }

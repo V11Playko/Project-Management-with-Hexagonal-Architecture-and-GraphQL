@@ -25,4 +25,9 @@ public class TeamUseCase implements ITeamServicePort {
     public void addUserToTeam(Long teamId, String emailUser) {
         teamPersistencePort.addUserToTeam(teamId, emailUser);
     }
+
+    @Override
+    public void removeUserFromTeam(Long teamId, String emailUser) {
+        teamPersistencePort.removeUserFromTeam(teamId, emailUser);
+    }
 }

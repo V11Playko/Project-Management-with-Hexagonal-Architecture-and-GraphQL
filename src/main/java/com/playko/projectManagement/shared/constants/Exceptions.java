@@ -26,5 +26,6 @@ public class Exceptions {
     public static final String USER_NOT_FOUND_MESSAGE = "Usuario no encontrado.";
     public static final String USERS_NOT_FOUND_MESSAGE= "Usuarios no encontrados.";
     public static final String TEAM_NOT_FOUND_MESSAGE= "Team no encontrado.";
+    public static final String USER_NOT_FOUND_IN_TEAM_MESSAGE= "Usuario no existe en el equipo.";
 
 }

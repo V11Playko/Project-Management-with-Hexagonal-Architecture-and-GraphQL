@@ -5,6 +5,7 @@ import com.playko.projectManagement.domain.model.TeamModel;
 import com.playko.projectManagement.domain.spi.ITeamPersistencePort;
 import com.playko.projectManagement.infrastructure.exception.TeamNotFoundException;
 import com.playko.projectManagement.infrastructure.exception.UserNotFoundException;
+import com.playko.projectManagement.infrastructure.exception.UserNotInTeamException;
 import com.playko.projectManagement.infrastructure.output.jpa.entity.TeamEntity;
 import com.playko.projectManagement.infrastructure.output.jpa.entity.UserEntity;
 import com.playko.projectManagement.infrastructure.output.jpa.mapper.ITeamEntityMapper;
@@ -32,6 +33,21 @@ public class TeamJpaAdapter implements ITeamPersistencePort {
 
         teamEntity.setUsers(Collections.singletonList(userEntity));
 
+        teamRepository.save(teamEntity);
+    }
+
+    @Override
+    public void removeUserFromTeam(Long teamId, String emailUser) {
+        TeamEntity teamEntity = teamRepository.findById(teamId)
+                .orElseThrow(TeamNotFoundException::new);
+        UserEntity userEntity = userRepository.findByEmail(emailUser)
+                .orElseThrow(UserNotFoundException::new);
+
+        if (!teamEntity.getUsers().contains(userEntity)) {
+            throw new UserNotInTeamException();
+        }
+
+        teamEntity.getUsers().remove(userEntity);
         teamRepository.save(teamEntity);
     }
 }

@@ -1,6 +1,7 @@
 package com.playko.projectManagement.infrastructure.exceptionhandler;
 
 import com.playko.projectManagement.infrastructure.exception.NoUsersFoundException;
+import com.playko.projectManagement.infrastructure.exception.ProjectAlreadyExistsException;
 import com.playko.projectManagement.infrastructure.exception.TeamNotFoundException;
 import com.playko.projectManagement.infrastructure.exception.UnauthorizedException;
 import com.playko.projectManagement.infrastructure.exception.UserAlreadyExistsException;
@@ -21,6 +22,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
+import static com.playko.projectManagement.shared.constants.Exceptions.PROJECT_ALREADY_EXISTS_MESSAGE;
 import static com.playko.projectManagement.shared.constants.Exceptions.RESPONSE_MESSAGE_KEY;
 import static com.playko.projectManagement.shared.constants.Exceptions.TEAM_NOT_FOUND_MESSAGE;
 import static com.playko.projectManagement.shared.constants.Exceptions.UNAUTHORIZED_MESSAGE;
@@ -109,5 +111,11 @@ public class ControllerAdvisor {
             UserNotInTeamException userNotInTeamException) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND)
                 .body(Collections.singletonMap(RESPONSE_MESSAGE_KEY, USER_NOT_FOUND_IN_TEAM_MESSAGE));
+    }
+    @ExceptionHandler(ProjectAlreadyExistsException.class)
+    public ResponseEntity<Map<String, String>> projectAlreadyExistsException(
+            ProjectAlreadyExistsException projectAlreadyExistsException) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(Collections.singletonMap(RESPONSE_MESSAGE_KEY, PROJECT_ALREADY_EXISTS_MESSAGE));
     }
 }

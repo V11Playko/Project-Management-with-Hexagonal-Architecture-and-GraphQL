@@ -12,6 +12,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -36,6 +37,7 @@ public class UserRestController {
     })
     @PostMapping("/saveUser")
     public ResponseEntity<Void> saveUser(@Valid @RequestBody UserRequestDto userRequestDto){
+        userRequestDto.setNameRole("ROLE_USER");
         userHandler.saveUser(userRequestDto);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
@@ -46,6 +48,7 @@ public class UserRestController {
             @ApiResponse(responseCode = "204", description = "No users found", content = @Content)
     })
     @GetMapping("/allUsers")
+    @PreAuthorize("hasAnyRole('MANAGER', 'CONTRIBUTOR')")
     public ResponseEntity<List<UserResponseDto>> getAllUsers() {
         List<UserResponseDto> users = userHandler.findAllUsers();
         return new ResponseEntity<>(users, HttpStatus.OK);
@@ -57,6 +60,7 @@ public class UserRestController {
             @ApiResponse(responseCode = "404", description = "User not found", content = @Content)
     })
     @GetMapping("getUser/{email}")
+    @PreAuthorize("hasAnyRole('MANAGER', 'CONTRIBUTOR')")
     public ResponseEntity<UserResponseDto> getUserByEmail(@PathVariable String email) {
         UserResponseDto user = userHandler.findByEmail(email);
         return new ResponseEntity<>(user, HttpStatus.OK);
@@ -68,6 +72,7 @@ public class UserRestController {
             @ApiResponse(responseCode = "404", description = "User not found", content = @Content)
     })
     @PutMapping("/updateUser/{id}")
+    @PreAuthorize("hasAnyRole('MANAGER', 'USER')")
     public ResponseEntity<Void> updateUser(
             @PathVariable Long id,
             @Valid @RequestBody UserUpdateRequestDto userUpdateRequestDto) {
@@ -81,6 +86,7 @@ public class UserRestController {
             @ApiResponse(responseCode = "409", description = "User already exists", content = @Content)
     })
     @DeleteMapping("/deleteUser/{id}")
+    @PreAuthorize("hasAnyRole('MANAGER', 'USER')")
     public ResponseEntity<Void> deleteUser(@PathVariable Long id){
         userHandler.deleteUser(id);
         return ResponseEntity.status(HttpStatus.OK).build();

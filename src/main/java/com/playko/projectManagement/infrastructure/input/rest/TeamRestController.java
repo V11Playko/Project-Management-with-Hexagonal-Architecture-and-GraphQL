@@ -12,6 +12,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -31,6 +32,7 @@ public class TeamRestController {
             @ApiResponse(responseCode = "400", description = "Invalid input", content = @Content)
     })
     @PostMapping("/saveTeam")
+    @PreAuthorize("hasRole('MANAGER')")
     public ResponseEntity<Void> saveTeam(@Valid @RequestBody TeamRequestDto teamRequestDto) {
         teamHandler.saveTeam(teamRequestDto);
         return new ResponseEntity<>(HttpStatus.CREATED);
@@ -43,6 +45,7 @@ public class TeamRestController {
             @ApiResponse(responseCode = "400", description = "Invalid request", content = @Content)
     })
     @PostMapping("/addUserToTeam")
+    @PreAuthorize("hasRole('MANAGER')")
     public ResponseEntity<Void> addUserToTeam(@Valid @RequestBody AddUserToTeamRequestDto addUserToTeamRequestDto) {
         teamHandler.addUserToTeam(addUserToTeamRequestDto.getTeamId(), addUserToTeamRequestDto.getEmailUser());
         return new ResponseEntity<>(HttpStatus.OK);
@@ -55,6 +58,7 @@ public class TeamRestController {
             @ApiResponse(responseCode = "400", description = "Invalid request", content = @Content)
     })
     @DeleteMapping("/removeUserFromTeam")
+    @PreAuthorize("hasRole('MANAGER')")
     public ResponseEntity<Void> removeUserFromTeam(@Valid @RequestBody RemoveUserFromTeamRequestDto removeUserFromTeamRequestDto) {
         teamHandler.removeUserFromTeam(removeUserFromTeamRequestDto.getTeamId(), removeUserFromTeamRequestDto.getEmailUser());
         return new ResponseEntity<>(HttpStatus.OK);

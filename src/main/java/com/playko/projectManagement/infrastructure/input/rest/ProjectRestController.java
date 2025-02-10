@@ -10,6 +10,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,6 +28,7 @@ public class ProjectRestController {
             @ApiResponse(responseCode = "400", description = "Invalid input", content = @Content)
     })
     @PostMapping("/create")
+    @PreAuthorize("hasAnyRole('MANAGER', 'USER')")
     public ResponseEntity<Void> createProject(@Valid @RequestBody ProjectRequestDto projectRequestDto) {
         projectHandler.createProject(projectRequestDto);
         return new ResponseEntity<>(HttpStatus.CREATED);

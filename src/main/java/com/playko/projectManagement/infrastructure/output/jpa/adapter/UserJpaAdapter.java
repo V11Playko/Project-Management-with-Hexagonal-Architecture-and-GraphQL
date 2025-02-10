@@ -7,9 +7,12 @@ import com.playko.projectManagement.infrastructure.exception.NoUsersFoundExcepti
 import com.playko.projectManagement.infrastructure.exception.UnauthorizedException;
 import com.playko.projectManagement.infrastructure.exception.UserAlreadyExistsException;
 import com.playko.projectManagement.infrastructure.exception.UserNotFoundException;
+import com.playko.projectManagement.infrastructure.output.jpa.entity.RoleEntity;
 import com.playko.projectManagement.infrastructure.output.jpa.entity.UserEntity;
 import com.playko.projectManagement.infrastructure.output.jpa.mapper.IUserEntityMapper;
+import com.playko.projectManagement.infrastructure.output.jpa.repository.IRoleRepository;
 import com.playko.projectManagement.infrastructure.output.jpa.repository.IUserRepository;
+import com.playko.projectManagement.shared.enums.RoleEnum;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -20,6 +23,7 @@ import java.util.List;
 public class UserJpaAdapter implements IUserPersistencePort {
     private final IUserRepository userRepository;
     private final IUserEntityMapper userEntityMapper;
+    private final IRoleRepository roleRepository;
 
     @Override
     public UserModel findByEmail(String email) {
@@ -38,10 +42,12 @@ public class UserJpaAdapter implements IUserPersistencePort {
 
     @Override
     public void saveUser(UserModel userModel) {
+        RoleEntity role = roleRepository.findByName(String.valueOf(RoleEnum.ROLE_USER));
         if (userRepository.findByEmail(userModel.getEmail()).isEmpty()) {
             throw new UserAlreadyExistsException();
         }
         UserEntity userEntity = userEntityMapper.toEntity(userModel);
+        userEntity.setRoleEntity(role);
         userRepository.save(userEntity);
     }
 

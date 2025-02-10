@@ -33,8 +33,6 @@ public class UserUseCase implements IUserServicePort {
 
     @Override
     public void saveUser(UserModel userModel) {
-        RoleModel role = rolePersistencePort.getRole(RolesId.USER_ROLE_ID);
-        userModel.setRoleModel(role);
         userModel.setPassword(authPasswordEncoderPort.encodePassword(userModel.getPassword()));
 
         userPersistencePort.saveUser(userModel);

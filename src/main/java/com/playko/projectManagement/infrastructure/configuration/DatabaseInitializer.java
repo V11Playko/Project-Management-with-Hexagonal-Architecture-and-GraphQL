@@ -30,8 +30,8 @@ public class DatabaseInitializer {
         createRoleIfNotExists("ROLE_ADMIN", "ROLE_ADMIN");
         createRoleIfNotExists("ROLE_CONTRIBUIDOR", "ROLE_CONTRIBUIDOR");
         createRoleIfNotExists("ROLE_MANAGER", "ROLE_MANAGER");
-        createRoleIfNotExists("ROLE_OBSERVADOR", "ROLE_OBSERVADOR");
-        createRoleIfNotExists("ROLE_USUARIO", "ROLE_USUARIO");
+        createRoleIfNotExists("ROLE_OBSERVER", "ROLE_OBSERVER");
+        createRoleIfNotExists("ROLE_USER", "ROLE_USER");
     }
 
     private void createRoleIfNotExists(String name, String description) {
@@ -45,13 +45,13 @@ public class DatabaseInitializer {
     }
 
     private void initializeAdminUser() {
-        if (userRepository.findByEmail("edu.ufps10@gmail.com") == null) {
+        if (userRepository.findByEmail("heinnervega20@gmail.com").isEmpty()) {
             UserEntity admin = new UserEntity();
             admin.setName("Admin");
             admin.setSurname("AdminSurname");
             admin.setPhone("+57 3136824595");
             admin.setDniNumber("10093875126");
-            admin.setEmail("edu.ufps10@gmail.com");
+            admin.setEmail("heinnervega20@gmail.com");
             admin.setPassword(passwordEncoder.encodePassword("admin"));
 
             RoleEntity adminRole = roleRepository.findByName("ROLE_ADMIN");

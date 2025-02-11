@@ -3,6 +3,7 @@ package com.playko.projectManagement.domain.model;
 import com.playko.projectManagement.shared.enums.ProjectState;
 
 import java.time.LocalDate;
+import java.util.List;
 
 public class ProjectModel {
     private Long id;
@@ -12,8 +13,10 @@ public class ProjectModel {
     private LocalDate finishedDate;
     private ProjectState state;
     private String owner;
+    private List<BoardModel> boards;
+    private List<TaskModel> tasks;
 
-    public ProjectModel(Long id, String name, String description, LocalDate creationDate, LocalDate finishedDate, ProjectState state, String owner) {
+    public ProjectModel(Long id, String name, String description, LocalDate creationDate, LocalDate finishedDate, ProjectState state, String owner, List<BoardModel> boards, List<TaskModel> tasks) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -21,6 +24,8 @@ public class ProjectModel {
         this.finishedDate = finishedDate;
         this.state = state;
         this.owner = owner;
+        this.boards = boards;
+        this.tasks = tasks;
     }
 
     public Long getId() {
@@ -77,5 +82,21 @@ public class ProjectModel {
 
     public void setOwner(String owner) {
         this.owner = owner;
+    }
+
+    public List<BoardModel> getBoards() {
+        return boards;
+    }
+
+    public void setBoards(List<BoardModel> boards) {
+        this.boards = boards;
+    }
+
+    public List<TaskModel> getTasks() {
+        return tasks;
+    }
+
+    public void setTasks(List<TaskModel> tasks) {
+        this.tasks = tasks;
     }
 }

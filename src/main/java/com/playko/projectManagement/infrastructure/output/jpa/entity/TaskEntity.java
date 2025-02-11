@@ -52,4 +52,8 @@ public class TaskEntity {
 
     @OneToMany(mappedBy = "task")
     private List<SubTaskEntity> subtasks;
+
+    @ManyToOne
+    @JoinColumn(name = "assigned_user_id")
+    private UserEntity assignedUser;
 }

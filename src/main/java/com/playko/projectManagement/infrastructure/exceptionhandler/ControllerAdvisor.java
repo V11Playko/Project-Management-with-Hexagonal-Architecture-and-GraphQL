@@ -1,7 +1,9 @@
 package com.playko.projectManagement.infrastructure.exceptionhandler;
 
+import com.playko.projectManagement.infrastructure.exception.BoardColumnNotFoundException;
 import com.playko.projectManagement.infrastructure.exception.NoUsersFoundException;
 import com.playko.projectManagement.infrastructure.exception.ProjectAlreadyExistsException;
+import com.playko.projectManagement.infrastructure.exception.ProjectNotFoundException;
 import com.playko.projectManagement.infrastructure.exception.TeamNotFoundException;
 import com.playko.projectManagement.infrastructure.exception.UnauthorizedException;
 import com.playko.projectManagement.infrastructure.exception.UserAlreadyExistsException;
@@ -22,7 +24,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
+import static com.playko.projectManagement.shared.constants.Exceptions.BOARD_COLUMN_NOT_FOUND_MESSAGE;
 import static com.playko.projectManagement.shared.constants.Exceptions.PROJECT_ALREADY_EXISTS_MESSAGE;
+import static com.playko.projectManagement.shared.constants.Exceptions.PROJECT_NOT_FOUND_MESSAGE;
 import static com.playko.projectManagement.shared.constants.Exceptions.RESPONSE_MESSAGE_KEY;
 import static com.playko.projectManagement.shared.constants.Exceptions.TEAM_NOT_FOUND_MESSAGE;
 import static com.playko.projectManagement.shared.constants.Exceptions.UNAUTHORIZED_MESSAGE;
@@ -118,4 +122,17 @@ public class ControllerAdvisor {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .body(Collections.singletonMap(RESPONSE_MESSAGE_KEY, PROJECT_ALREADY_EXISTS_MESSAGE));
     }
+    @ExceptionHandler(ProjectNotFoundException.class)
+    public ResponseEntity<Map<String, String>> projectNotFoundException(
+            ProjectNotFoundException projectNotFoundException) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .body(Collections.singletonMap(RESPONSE_MESSAGE_KEY, PROJECT_NOT_FOUND_MESSAGE));
+    }
+    @ExceptionHandler(BoardColumnNotFoundException.class)
+    public ResponseEntity<Map<String, String>> boardColumnNotFoundException(
+            BoardColumnNotFoundException boardColumnNotFoundException) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .body(Collections.singletonMap(RESPONSE_MESSAGE_KEY, BOARD_COLUMN_NOT_FOUND_MESSAGE));
+    }
+
 }

@@ -28,5 +28,7 @@ public class Exceptions {
     public static final String TEAM_NOT_FOUND_MESSAGE= "Team no encontrado.";
     public static final String USER_NOT_FOUND_IN_TEAM_MESSAGE= "Usuario no existe en el equipo.";
     public static final String PROJECT_ALREADY_EXISTS_MESSAGE = "Este proyecto ya esta en uso.";
+    public static final String PROJECT_NOT_FOUND_MESSAGE = "Este projecto no existe.";
+    public static final String BOARD_COLUMN_NOT_FOUND_MESSAGE  = "Esta columna de la tabla no existe.";
 
 }

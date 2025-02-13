@@ -1,5 +1,6 @@
 package com.playko.projectManagement.application.mapper.request;
 
+import com.playko.projectManagement.application.dto.request.TaskAssignmentRequestDto;
 import com.playko.projectManagement.application.dto.request.TaskRequestDto;
 import com.playko.projectManagement.domain.model.TaskModel;
 import org.mapstruct.Mapper;
@@ -16,4 +17,8 @@ public interface ITaskRequestMapper {
     @Mapping(target = "boardColumn.id", source = "boardColumnId")
     @Mapping(target = "assignedUserId.id", source = "assignedUserId")
     TaskModel toModel(TaskRequestDto taskRequestDto);
+
+    @Mapping(target = "id", source = "taskId")
+    @Mapping(target = "assignedUserId", source = "userId")
+    TaskModel taskAssignmentToModel(TaskAssignmentRequestDto assignmentRequestDto);
 }

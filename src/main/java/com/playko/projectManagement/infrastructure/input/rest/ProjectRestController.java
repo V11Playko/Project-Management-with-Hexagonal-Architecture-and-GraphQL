@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/projects")
+@RequestMapping("/api/v1/project")
 @RequiredArgsConstructor
 public class ProjectRestController {
     private final IProjectHandler projectHandler;
@@ -27,7 +27,7 @@ public class ProjectRestController {
             @ApiResponse(responseCode = "201", description = "Project created", content = @Content),
             @ApiResponse(responseCode = "400", description = "Invalid input", content = @Content)
     })
-    @PostMapping("/create")
+    @PostMapping("/createProject")
     @PreAuthorize("hasAnyRole('MANAGER', 'USER')")
     public ResponseEntity<Void> createProject(@Valid @RequestBody ProjectRequestDto projectRequestDto) {
         projectHandler.createProject(projectRequestDto);

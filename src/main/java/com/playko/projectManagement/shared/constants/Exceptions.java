@@ -30,5 +30,6 @@ public class Exceptions {
     public static final String PROJECT_ALREADY_EXISTS_MESSAGE = "Este proyecto ya esta en uso.";
     public static final String PROJECT_NOT_FOUND_MESSAGE = "Este projecto no existe.";
     public static final String BOARD_COLUMN_NOT_FOUND_MESSAGE  = "Esta columna de la tabla no existe.";
+    public static final String TASK_NOT_FOUND_MESSAGE = "Esta tarea no existe.";
 
 }

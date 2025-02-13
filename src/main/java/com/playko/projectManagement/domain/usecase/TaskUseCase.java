@@ -15,4 +15,9 @@ public class TaskUseCase implements ITaskServicePort {
     public void saveTask(TaskModel taskModel) {
         taskPersistencePort.saveTask(taskModel);
     }
+
+    @Override
+    public void assignTaskToUser(Long taskId, Long userId) {
+        taskPersistencePort.assignTaskToUser(taskId, userId);
+    }
 }

@@ -4,6 +4,7 @@ import com.playko.projectManagement.domain.model.TaskModel;
 import com.playko.projectManagement.domain.spi.ITaskPersistencePort;
 import com.playko.projectManagement.infrastructure.exception.BoardColumnNotFoundException;
 import com.playko.projectManagement.infrastructure.exception.ProjectNotFoundException;
+import com.playko.projectManagement.infrastructure.exception.TaskNotFoundException;
 import com.playko.projectManagement.infrastructure.exception.UserNotFoundException;
 import com.playko.projectManagement.infrastructure.output.jpa.entity.BoardColumnEntity;
 import com.playko.projectManagement.infrastructure.output.jpa.entity.ProjectEntity;
@@ -38,6 +39,17 @@ public class TaskJpaAdapter implements ITaskPersistencePort {
         taskEntity.setBoardColumn(boardColumn);
         taskEntity.setAssignedUser(user);
 
+        taskRepository.save(taskEntity);
+    }
+
+    @Override
+    public void assignTaskToUser(Long taskId, Long userId) {
+        TaskEntity taskEntity = taskRepository.findById(taskId)
+                .orElseThrow(TaskNotFoundException::new);
+        UserEntity userEntity = userRepository.findById(userId)
+                .orElseThrow(UserNotFoundException::new);
+
+        taskEntity.setAssignedUser(userEntity);
         taskRepository.save(taskEntity);
     }
 }

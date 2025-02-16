@@ -20,4 +20,9 @@ public class TaskUseCase implements ITaskServicePort {
     public void assignTaskToUser(Long taskId, Long userId) {
         taskPersistencePort.assignTaskToUser(taskId, userId);
     }
+
+    @Override
+    public void reassignTask(Long taskId, Long newUserId) {
+        taskPersistencePort.reassignTask(taskId, newUserId);
+    }
 }

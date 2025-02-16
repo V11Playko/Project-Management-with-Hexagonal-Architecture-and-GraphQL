@@ -52,4 +52,15 @@ public class TaskJpaAdapter implements ITaskPersistencePort {
         taskEntity.setAssignedUser(userEntity);
         taskRepository.save(taskEntity);
     }
+
+    @Override
+    public void reassignTask(Long taskId, Long newUserId) {
+        TaskEntity task = taskRepository.findById(taskId)
+                .orElseThrow(TaskNotFoundException::new);
+        UserEntity newUser = userRepository.findById(newUserId)
+                .orElseThrow(UserNotFoundException::new);
+
+        task.setAssignedUser(newUser);
+        taskRepository.save(task);
+    }
 }

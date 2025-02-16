@@ -1,7 +1,7 @@
 package com.playko.projectManagement.application.mapper.request;
 
-import com.playko.projectManagement.application.dto.request.TaskAssignmentRequestDto;
-import com.playko.projectManagement.application.dto.request.TaskRequestDto;
+import com.playko.projectManagement.application.dto.request.task.TaskAssignmentRequestDto;
+import com.playko.projectManagement.application.dto.request.task.TaskRequestDto;
 import com.playko.projectManagement.domain.model.TaskModel;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;

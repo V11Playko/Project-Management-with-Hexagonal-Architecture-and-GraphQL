@@ -1,7 +1,8 @@
 package com.playko.projectManagement.application.handler.impl;
 
-import com.playko.projectManagement.application.dto.request.TaskAssignmentRequestDto;
-import com.playko.projectManagement.application.dto.request.TaskRequestDto;
+import com.playko.projectManagement.application.dto.request.task.TaskAssignmentRequestDto;
+import com.playko.projectManagement.application.dto.request.task.TaskReassignmentRequestDto;
+import com.playko.projectManagement.application.dto.request.task.TaskRequestDto;
 import com.playko.projectManagement.application.handler.ITaskHandler;
 import com.playko.projectManagement.application.mapper.request.ITaskRequestMapper;
 import com.playko.projectManagement.domain.api.ITaskServicePort;
@@ -26,5 +27,10 @@ public class TaskHandler implements ITaskHandler {
     public void assignTaskToUser(TaskAssignmentRequestDto taskAssignmentRequestDto) {
         TaskModel taskModel = taskRequestMapper.taskAssignmentToModel(taskAssignmentRequestDto);
         taskServicePort.assignTaskToUser(taskModel.getId(), taskModel.getAssignedUserId().getId());
+    }
+
+    @Override
+    public void reassignTask(TaskReassignmentRequestDto taskReassignmentRequestDto) {
+        taskServicePort.reassignTask(taskReassignmentRequestDto.getTaskId(), taskReassignmentRequestDto.getNewUserId());
     }
 }

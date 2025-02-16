@@ -1,4 +1,4 @@
-package com.playko.projectManagement.application.dto.request;
+package com.playko.projectManagement.application.dto.request.task;
 
 import com.playko.projectManagement.shared.enums.TaskPriority;
 import com.playko.projectManagement.shared.enums.TaskState;

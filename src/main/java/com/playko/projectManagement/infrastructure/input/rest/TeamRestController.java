@@ -1,8 +1,8 @@
 package com.playko.projectManagement.infrastructure.input.rest;
 
-import com.playko.projectManagement.application.dto.request.AddUserToTeamRequestDto;
-import com.playko.projectManagement.application.dto.request.RemoveUserFromTeamRequestDto;
-import com.playko.projectManagement.application.dto.request.TeamRequestDto;
+import com.playko.projectManagement.application.dto.request.team.AddUserToTeamRequestDto;
+import com.playko.projectManagement.application.dto.request.team.RemoveUserFromTeamRequestDto;
+import com.playko.projectManagement.application.dto.request.team.TeamRequestDto;
 import com.playko.projectManagement.application.handler.ITeamHandler;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -14,7 +14,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;

@@ -1,7 +1,7 @@
 package com.playko.projectManagement.application.handler;
 
-import com.playko.projectManagement.application.dto.request.UserRequestDto;
-import com.playko.projectManagement.application.dto.request.UserUpdateRequestDto;
+import com.playko.projectManagement.application.dto.request.user.UserRequestDto;
+import com.playko.projectManagement.application.dto.request.user.UserUpdateRequestDto;
 import com.playko.projectManagement.application.dto.response.UserResponseDto;
 
 import java.util.List;

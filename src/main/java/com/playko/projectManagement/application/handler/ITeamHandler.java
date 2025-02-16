@@ -1,6 +1,6 @@
 package com.playko.projectManagement.application.handler;
 
-import com.playko.projectManagement.application.dto.request.TeamRequestDto;
+import com.playko.projectManagement.application.dto.request.team.TeamRequestDto;
 
 public interface ITeamHandler {
     void saveTeam(TeamRequestDto teamRequestDto);

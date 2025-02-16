@@ -1,6 +1,6 @@
 package com.playko.projectManagement.application.mapper.request;
 
-import com.playko.projectManagement.application.dto.request.UserRequestDto;
+import com.playko.projectManagement.application.dto.request.user.UserRequestDto;
 import com.playko.projectManagement.domain.model.UserModel;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;

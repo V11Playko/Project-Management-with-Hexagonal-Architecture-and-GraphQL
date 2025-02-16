@@ -1,4 +1,4 @@
-package com.playko.projectManagement.application.dto.request;
+package com.playko.projectManagement.application.dto.request.user;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
@@ -11,7 +11,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @AllArgsConstructor
-public class UserUpdateRequestDto {
+public class UserRequestDto {
     @NotNull(message = "El nombre es obligatorio.")
     private String name;
 
@@ -34,4 +34,8 @@ public class UserUpdateRequestDto {
 
     @NotNull(message = "La contraseña es obligatoria.")
     private String password;
+
+    private String nameRole;
+    private String descriptionRole;
+    private String team;
 }

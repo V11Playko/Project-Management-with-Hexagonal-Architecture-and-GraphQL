@@ -1,6 +1,6 @@
 package com.playko.projectManagement.application.mapper.request;
 
-import com.playko.projectManagement.application.dto.request.TeamRequestDto;
+import com.playko.projectManagement.application.dto.request.team.TeamRequestDto;
 import com.playko.projectManagement.domain.model.TeamModel;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;

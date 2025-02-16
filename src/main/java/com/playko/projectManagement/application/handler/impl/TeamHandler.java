@@ -1,6 +1,6 @@
 package com.playko.projectManagement.application.handler.impl;
 
-import com.playko.projectManagement.application.dto.request.TeamRequestDto;
+import com.playko.projectManagement.application.dto.request.team.TeamRequestDto;
 import com.playko.projectManagement.application.handler.ITeamHandler;
 import com.playko.projectManagement.application.mapper.request.ITeamRequestMapper;
 import com.playko.projectManagement.domain.api.ITeamServicePort;

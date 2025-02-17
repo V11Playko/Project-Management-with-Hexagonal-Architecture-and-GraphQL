@@ -1,5 +1,6 @@
 package com.playko.projectManagement.infrastructure.input.rest;
 
+import com.playko.projectManagement.application.dto.request.ProjectDeadlineRequestDto;
 import com.playko.projectManagement.application.dto.request.ProjectRequestDto;
 import com.playko.projectManagement.application.handler.IProjectHandler;
 import io.swagger.v3.oas.annotations.Operation;
@@ -12,6 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -32,5 +34,18 @@ public class ProjectRestController {
     public ResponseEntity<Void> createProject(@Valid @RequestBody ProjectRequestDto projectRequestDto) {
         projectHandler.createProject(projectRequestDto);
         return new ResponseEntity<>(HttpStatus.CREATED);
+    }
+
+    @Operation(summary = "Update project deadline")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Project deadline updated"),
+            @ApiResponse(responseCode = "404", description = "Project not found"),
+            @ApiResponse(responseCode = "403", description = "User not authorized")
+    })
+    @PreAuthorize("hasRole('MANAGER')")
+    @PutMapping("/updateDeadline")
+    public ResponseEntity<Void> updateProjectDeadline(@Valid @RequestBody ProjectDeadlineRequestDto request) {
+        projectHandler.updateProjectDeadline(request);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }

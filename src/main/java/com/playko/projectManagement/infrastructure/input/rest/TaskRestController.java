@@ -1,6 +1,7 @@
 package com.playko.projectManagement.infrastructure.input.rest;
 
 import com.playko.projectManagement.application.dto.request.task.TaskAssignmentRequestDto;
+import com.playko.projectManagement.application.dto.request.task.TaskDeadlineRequestDto;
 import com.playko.projectManagement.application.dto.request.task.TaskReassignmentRequestDto;
 import com.playko.projectManagement.application.dto.request.task.TaskRequestDto;
 import com.playko.projectManagement.application.handler.ITaskHandler;
@@ -14,6 +15,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -59,6 +61,19 @@ public class TaskRestController {
     @PostMapping("/reassignTask")
     public ResponseEntity<Void> reassignTask(@Valid @RequestBody TaskReassignmentRequestDto request) {
         taskHandler.reassignTask(request);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @Operation(summary = "Update task deadline")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Task deadline updated"),
+            @ApiResponse(responseCode = "404", description = "Task not found"),
+            @ApiResponse(responseCode = "403", description = "User not authorized")
+    })
+    @PreAuthorize("hasRole('MANAGER')")
+    @PutMapping("/updateDeadline")
+    public ResponseEntity<Void> updateTaskDeadline(@Valid @RequestBody TaskDeadlineRequestDto request) {
+        taskHandler.updateTaskDeadline(request);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 }

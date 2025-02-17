@@ -17,6 +17,8 @@ import com.playko.projectManagement.infrastructure.output.jpa.repository.ITaskRe
 import com.playko.projectManagement.infrastructure.output.jpa.repository.IUserRepository;
 import lombok.RequiredArgsConstructor;
 
+import java.time.LocalDate;
+
 @RequiredArgsConstructor
 public class TaskJpaAdapter implements ITaskPersistencePort {
     private final ITaskRepository taskRepository;
@@ -62,5 +64,13 @@ public class TaskJpaAdapter implements ITaskPersistencePort {
 
         task.setAssignedUser(newUser);
         taskRepository.save(task);
+    }
+
+    @Override
+    public void updateTaskDeadline(Long taskId, LocalDate deadline) {
+        TaskEntity taskEntity = taskRepository.findById(taskId)
+                .orElseThrow(TaskNotFoundException::new);
+        taskEntity.setLimitDate(deadline);
+        taskRepository.save(taskEntity);
     }
 }

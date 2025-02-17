@@ -2,6 +2,7 @@ package com.playko.projectManagement.infrastructure.output.jpa.adapter;
 
 import com.playko.projectManagement.domain.model.ProjectModel;
 import com.playko.projectManagement.domain.spi.IProjectPersistencePort;
+import com.playko.projectManagement.infrastructure.exception.ProjectNotFoundException;
 import com.playko.projectManagement.infrastructure.exception.UserNotFoundException;
 import com.playko.projectManagement.infrastructure.output.jpa.entity.ProjectEntity;
 import com.playko.projectManagement.infrastructure.output.jpa.entity.RoleEntity;
@@ -13,6 +14,8 @@ import com.playko.projectManagement.infrastructure.output.jpa.repository.IUserRe
 import com.playko.projectManagement.shared.constants.RolesId;
 import com.playko.projectManagement.shared.enums.RoleEnum;
 import lombok.RequiredArgsConstructor;
+
+import java.time.LocalDate;
 
 @RequiredArgsConstructor
 public class ProjectJpaAdapter implements IProjectPersistencePort {
@@ -34,5 +37,13 @@ public class ProjectJpaAdapter implements IProjectPersistencePort {
             userEntity.setRoleEntity(roleEntity);
             userRepository.save(userEntity);
         }
+    }
+
+    @Override
+    public void updateProjectDeadline(Long projectId, LocalDate deadline) {
+        ProjectEntity project = projectRepository.findById(projectId)
+                .orElseThrow(ProjectNotFoundException::new);
+        project.setFinishedDate(deadline);
+        projectRepository.save(project);
     }
 }

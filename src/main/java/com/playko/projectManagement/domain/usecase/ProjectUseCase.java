@@ -20,4 +20,9 @@ public class ProjectUseCase implements IProjectServicePort {
         projectModel.setState(ProjectState.ACTIVE);
         projectPersistencePort.createProject(projectModel);
     }
+
+    @Override
+    public void updateProjectDeadline(Long projectId, LocalDate deadline) {
+        projectPersistencePort.updateProjectDeadline(projectId, deadline);
+    }
 }

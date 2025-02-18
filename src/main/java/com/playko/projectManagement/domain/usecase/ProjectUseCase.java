@@ -25,4 +25,9 @@ public class ProjectUseCase implements IProjectServicePort {
     public void updateProjectDeadline(Long projectId, LocalDate deadline) {
         projectPersistencePort.updateProjectDeadline(projectId, deadline);
     }
+
+    @Override
+    public void archiveProject(Long projectId) {
+        projectPersistencePort.archiveProject(projectId);
+    }
 }

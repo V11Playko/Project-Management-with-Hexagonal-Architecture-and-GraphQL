@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -46,6 +47,20 @@ public class ProjectRestController {
     @PutMapping("/updateDeadline")
     public ResponseEntity<Void> updateProjectDeadline(@Valid @RequestBody ProjectDeadlineRequestDto request) {
         projectHandler.updateProjectDeadline(request);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @Operation(summary = "Archive a completed project")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Project archived successfully"),
+            @ApiResponse(responseCode = "404", description = "Project not found"),
+            @ApiResponse(responseCode = "400", description = "Project is not completed"),
+            @ApiResponse(responseCode = "403", description = "User is not authorized")
+    })
+    @PreAuthorize("hasRole('MANAGER')")
+    @PutMapping("/archive/{projectId}")
+    public ResponseEntity<Void> archiveProject(@PathVariable Long projectId) {
+        projectHandler.archiveProject(projectId);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 }

@@ -2,6 +2,7 @@ package com.playko.projectManagement.infrastructure.output.jpa.adapter;
 
 import com.playko.projectManagement.domain.model.ProjectModel;
 import com.playko.projectManagement.domain.spi.IProjectPersistencePort;
+import com.playko.projectManagement.infrastructure.exception.InvalidProjectStateException;
 import com.playko.projectManagement.infrastructure.exception.ProjectNotFoundException;
 import com.playko.projectManagement.infrastructure.exception.UserNotFoundException;
 import com.playko.projectManagement.infrastructure.output.jpa.entity.ProjectEntity;
@@ -12,6 +13,7 @@ import com.playko.projectManagement.infrastructure.output.jpa.repository.IProjec
 import com.playko.projectManagement.infrastructure.output.jpa.repository.IRoleRepository;
 import com.playko.projectManagement.infrastructure.output.jpa.repository.IUserRepository;
 import com.playko.projectManagement.shared.constants.RolesId;
+import com.playko.projectManagement.shared.enums.ProjectState;
 import com.playko.projectManagement.shared.enums.RoleEnum;
 import lombok.RequiredArgsConstructor;
 
@@ -44,6 +46,18 @@ public class ProjectJpaAdapter implements IProjectPersistencePort {
         ProjectEntity project = projectRepository.findById(projectId)
                 .orElseThrow(ProjectNotFoundException::new);
         project.setFinishedDate(deadline);
+        projectRepository.save(project);
+    }
+
+    @Override
+    public void archiveProject(Long projectId) {
+        ProjectEntity project = projectRepository.findById(projectId)
+                .orElseThrow(ProjectNotFoundException::new);
+        if (!project.getState().equals(ProjectState.COMPLETED)) {
+            throw new InvalidProjectStateException();
+        }
+
+        project.setState(ProjectState.ARCHIVED);
         projectRepository.save(project);
     }
 }

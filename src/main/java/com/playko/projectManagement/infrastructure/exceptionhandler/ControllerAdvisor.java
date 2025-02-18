@@ -1,6 +1,7 @@
 package com.playko.projectManagement.infrastructure.exceptionhandler;
 
 import com.playko.projectManagement.infrastructure.exception.BoardColumnNotFoundException;
+import com.playko.projectManagement.infrastructure.exception.InvalidProjectStateException;
 import com.playko.projectManagement.infrastructure.exception.NoUsersFoundException;
 import com.playko.projectManagement.infrastructure.exception.ProjectAlreadyExistsException;
 import com.playko.projectManagement.infrastructure.exception.ProjectNotFoundException;
@@ -26,6 +27,7 @@ import java.util.Map;
 import java.util.Set;
 
 import static com.playko.projectManagement.shared.constants.Exceptions.BOARD_COLUMN_NOT_FOUND_MESSAGE;
+import static com.playko.projectManagement.shared.constants.Exceptions.INVALID_PROJECT_STATE_MESSAGE;
 import static com.playko.projectManagement.shared.constants.Exceptions.PROJECT_ALREADY_EXISTS_MESSAGE;
 import static com.playko.projectManagement.shared.constants.Exceptions.PROJECT_NOT_FOUND_MESSAGE;
 import static com.playko.projectManagement.shared.constants.Exceptions.RESPONSE_MESSAGE_KEY;
@@ -141,5 +143,11 @@ public class ControllerAdvisor {
             TaskNotFoundException taskNotFoundException) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND)
                 .body(Collections.singletonMap(RESPONSE_MESSAGE_KEY, TASK_NOT_FOUND_MESSAGE));
+    }
+    @ExceptionHandler(InvalidProjectStateException.class)
+    public ResponseEntity<Map<String, String>> invalidProjectStateException(
+            InvalidProjectStateException invalidProjectStateException) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(Collections.singletonMap(RESPONSE_MESSAGE_KEY, INVALID_PROJECT_STATE_MESSAGE));
     }
 }

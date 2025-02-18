@@ -7,5 +7,6 @@ import java.time.LocalDate;
 public interface IProjectServicePort {
     void createProject(ProjectModel projectModel);
     void updateProjectDeadline(Long projectId, LocalDate deadline);
+    void archiveProject(Long projectId);
 
 }

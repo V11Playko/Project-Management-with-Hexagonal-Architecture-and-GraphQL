@@ -29,4 +29,9 @@ public class ProjectHandler implements IProjectHandler {
     public void updateProjectDeadline(ProjectDeadlineRequestDto projectDto) {
         projectServicePort.updateProjectDeadline(projectDto.getProjectId(), projectDto.getDeadline());
     }
+
+    @Override
+    public void archiveProject(Long projectId) {
+        projectServicePort.archiveProject(projectId);
+    }
 }

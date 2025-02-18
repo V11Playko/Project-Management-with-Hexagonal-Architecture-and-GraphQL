@@ -8,5 +8,5 @@ import java.time.LocalDate;
 public interface IProjectHandler {
     void createProject(ProjectRequestDto projectRequestDto);
     void updateProjectDeadline(ProjectDeadlineRequestDto projectDeadlineRequestDto);
-
+    void archiveProject(Long projectId);
 }

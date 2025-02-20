@@ -5,6 +5,7 @@ import com.playko.projectManagement.infrastructure.exception.InvalidProjectState
 import com.playko.projectManagement.infrastructure.exception.NoUsersFoundException;
 import com.playko.projectManagement.infrastructure.exception.ProjectAlreadyExistsException;
 import com.playko.projectManagement.infrastructure.exception.ProjectNotFoundException;
+import com.playko.projectManagement.infrastructure.exception.SubTaskNotFoundException;
 import com.playko.projectManagement.infrastructure.exception.TaskNotFoundException;
 import com.playko.projectManagement.infrastructure.exception.TeamNotFoundException;
 import com.playko.projectManagement.infrastructure.exception.UnauthorizedException;
@@ -31,6 +32,7 @@ import static com.playko.projectManagement.shared.constants.Exceptions.INVALID_P
 import static com.playko.projectManagement.shared.constants.Exceptions.PROJECT_ALREADY_EXISTS_MESSAGE;
 import static com.playko.projectManagement.shared.constants.Exceptions.PROJECT_NOT_FOUND_MESSAGE;
 import static com.playko.projectManagement.shared.constants.Exceptions.RESPONSE_MESSAGE_KEY;
+import static com.playko.projectManagement.shared.constants.Exceptions.SUB_TASK_NOT_FOUND_MESSAGE;
 import static com.playko.projectManagement.shared.constants.Exceptions.TASK_NOT_FOUND_MESSAGE;
 import static com.playko.projectManagement.shared.constants.Exceptions.TEAM_NOT_FOUND_MESSAGE;
 import static com.playko.projectManagement.shared.constants.Exceptions.UNAUTHORIZED_MESSAGE;
@@ -149,5 +151,11 @@ public class ControllerAdvisor {
             InvalidProjectStateException invalidProjectStateException) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .body(Collections.singletonMap(RESPONSE_MESSAGE_KEY, INVALID_PROJECT_STATE_MESSAGE));
+    }
+    @ExceptionHandler(SubTaskNotFoundException.class)
+    public ResponseEntity<Map<String, String>> subTaskNotFoundException(
+            SubTaskNotFoundException subTaskNotFoundException) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .body(Collections.singletonMap(RESPONSE_MESSAGE_KEY, SUB_TASK_NOT_FOUND_MESSAGE));
     }
 }

@@ -32,5 +32,6 @@ public class Exceptions {
     public static final String BOARD_COLUMN_NOT_FOUND_MESSAGE  = "Esta columna de la tabla no existe.";
     public static final String TASK_NOT_FOUND_MESSAGE = "Esta tarea no existe.";
     public static final String INVALID_PROJECT_STATE_MESSAGE = "Sólo se pueden archivar los proyectos finalizados.";
+    public static final String SUB_TASK_NOT_FOUND_MESSAGE= "Subtarea no encontrada.";
 
 }

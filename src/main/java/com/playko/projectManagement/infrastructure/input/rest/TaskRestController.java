@@ -4,6 +4,7 @@ import com.playko.projectManagement.application.dto.request.task.TaskAssignmentR
 import com.playko.projectManagement.application.dto.request.task.TaskDeadlineRequestDto;
 import com.playko.projectManagement.application.dto.request.task.TaskReassignmentRequestDto;
 import com.playko.projectManagement.application.dto.request.task.TaskRequestDto;
+import com.playko.projectManagement.application.dto.request.task.TaskStateUpdateRequestDto;
 import com.playko.projectManagement.application.handler.ITaskHandler;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -14,6 +15,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -74,6 +76,13 @@ public class TaskRestController {
     @PutMapping("/updateDeadline")
     public ResponseEntity<Void> updateTaskDeadline(@Valid @RequestBody TaskDeadlineRequestDto request) {
         taskHandler.updateTaskDeadline(request);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @PreAuthorize("hasRole('CONTRIBUTOR')")
+    @PutMapping("/{taskId}/updateState")
+    public ResponseEntity<Void> updateTaskState(@PathVariable Long taskId, @RequestBody TaskStateUpdateRequestDto request) {
+        taskHandler.updateTaskState(taskId, request.getNewState());
         return new ResponseEntity<>(HttpStatus.OK);
     }
 }

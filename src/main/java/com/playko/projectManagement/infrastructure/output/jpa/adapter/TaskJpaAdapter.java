@@ -15,7 +15,9 @@ import com.playko.projectManagement.infrastructure.output.jpa.repository.IBoardC
 import com.playko.projectManagement.infrastructure.output.jpa.repository.IProjectRepository;
 import com.playko.projectManagement.infrastructure.output.jpa.repository.ITaskRepository;
 import com.playko.projectManagement.infrastructure.output.jpa.repository.IUserRepository;
+import com.playko.projectManagement.shared.enums.TaskState;
 import lombok.RequiredArgsConstructor;
+import org.springframework.scheduling.config.Task;
 
 import java.time.LocalDate;
 
@@ -71,6 +73,14 @@ public class TaskJpaAdapter implements ITaskPersistencePort {
         TaskEntity taskEntity = taskRepository.findById(taskId)
                 .orElseThrow(TaskNotFoundException::new);
         taskEntity.setLimitDate(deadline);
+        taskRepository.save(taskEntity);
+    }
+
+    @Override
+    public void updateTaskState(Long taskId, TaskState newState) {
+        TaskEntity taskEntity = taskRepository.findById(taskId)
+                .orElseThrow(TaskNotFoundException::new);
+        taskEntity.setState(newState);
         taskRepository.save(taskEntity);
     }
 }

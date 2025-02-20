@@ -8,6 +8,7 @@ import com.playko.projectManagement.application.handler.ITaskHandler;
 import com.playko.projectManagement.application.mapper.request.ITaskRequestMapper;
 import com.playko.projectManagement.domain.api.ITaskServicePort;
 import com.playko.projectManagement.domain.model.TaskModel;
+import com.playko.projectManagement.shared.enums.TaskState;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -38,5 +39,10 @@ public class TaskHandler implements ITaskHandler {
     @Override
     public void updateTaskDeadline(TaskDeadlineRequestDto taskDeadlineRequestDto) {
         taskServicePort.updateTaskDeadline(taskDeadlineRequestDto.getTaskId(), taskDeadlineRequestDto.getDeadline());
+    }
+
+    @Override
+    public void updateTaskState(Long taskId, TaskState newState) {
+        taskServicePort.updateTaskState(taskId, newState);
     }
 }

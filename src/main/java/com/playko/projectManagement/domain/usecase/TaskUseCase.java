@@ -6,12 +6,18 @@ import com.playko.projectManagement.domain.spi.ITaskPersistencePort;
 import com.playko.projectManagement.shared.enums.TaskState;
 
 import java.time.LocalDate;
+import java.util.List;
 
 public class TaskUseCase implements ITaskServicePort {
     private final ITaskPersistencePort taskPersistencePort;
 
     public TaskUseCase(ITaskPersistencePort taskPersistencePort) {
         this.taskPersistencePort = taskPersistencePort;
+    }
+
+    @Override
+    public List<TaskModel> getTasksByUserEmail() {
+        return taskPersistencePort.getTasksByUserEmail();
     }
 
     @Override

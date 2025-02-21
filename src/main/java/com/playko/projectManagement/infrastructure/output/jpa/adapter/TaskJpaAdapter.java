@@ -2,6 +2,7 @@ package com.playko.projectManagement.infrastructure.output.jpa.adapter;
 
 import com.playko.projectManagement.domain.model.TaskModel;
 import com.playko.projectManagement.domain.spi.ITaskPersistencePort;
+import com.playko.projectManagement.infrastructure.configuration.security.userDetails.CustomUserDetails;
 import com.playko.projectManagement.infrastructure.exception.BoardColumnNotFoundException;
 import com.playko.projectManagement.infrastructure.exception.ProjectNotFoundException;
 import com.playko.projectManagement.infrastructure.exception.TaskNotFoundException;
@@ -18,8 +19,11 @@ import com.playko.projectManagement.infrastructure.output.jpa.repository.IUserRe
 import com.playko.projectManagement.shared.enums.TaskState;
 import lombok.RequiredArgsConstructor;
 import org.springframework.scheduling.config.Task;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @RequiredArgsConstructor
 public class TaskJpaAdapter implements ITaskPersistencePort {
@@ -28,6 +32,16 @@ public class TaskJpaAdapter implements ITaskPersistencePort {
     private final IBoardColumnRepository boardColumnRepository;
     private final IUserRepository userRepository;
     private final ITaskEntityMapper taskEntityMapper;
+
+    @Override
+    public List<TaskModel> getTasksByUserEmail() {
+          String correoDelToken = obtenerCorreoDelToken();
+          UserEntity userEntity = userRepository.findByEmail(correoDelToken)
+                  .orElseThrow(UserNotFoundException::new);
+
+          List<TaskEntity> taskEntities = taskRepository.findByAssignedUser(userEntity);
+          return taskEntityMapper.toDtoList(taskEntities);
+    }
 
     @Override
     public void saveTask(TaskModel taskModel) {
@@ -82,5 +96,14 @@ public class TaskJpaAdapter implements ITaskPersistencePort {
                 .orElseThrow(TaskNotFoundException::new);
         taskEntity.setState(newState);
         taskRepository.save(taskEntity);
+    }
+
+    public String obtenerCorreoDelToken() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication != null && authentication.getPrincipal() instanceof CustomUserDetails) {
+            CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
+            return userDetails.getUsername();
+        }
+        throw new RuntimeException("Error obteniendo el correo del token.");
     }
 }

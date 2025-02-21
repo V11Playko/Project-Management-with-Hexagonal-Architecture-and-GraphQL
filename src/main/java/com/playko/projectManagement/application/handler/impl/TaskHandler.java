@@ -4,6 +4,7 @@ import com.playko.projectManagement.application.dto.request.task.TaskAssignmentR
 import com.playko.projectManagement.application.dto.request.task.TaskDeadlineRequestDto;
 import com.playko.projectManagement.application.dto.request.task.TaskReassignmentRequestDto;
 import com.playko.projectManagement.application.dto.request.task.TaskRequestDto;
+import com.playko.projectManagement.application.dto.response.TaskResponseDto;
 import com.playko.projectManagement.application.handler.ITaskHandler;
 import com.playko.projectManagement.application.mapper.request.ITaskRequestMapper;
 import com.playko.projectManagement.domain.api.ITaskServicePort;
@@ -13,12 +14,21 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 @Transactional
 public class TaskHandler implements ITaskHandler {
     private final ITaskServicePort taskServicePort;
     private final ITaskRequestMapper taskRequestMapper;
+
+    @Override
+    public List<TaskResponseDto> getTasksByUserEmail() {
+        List<TaskModel> taskModels = taskServicePort.getTasksByUserEmail();
+        return taskRequestMapper.toDtoList(taskModels);
+    }
+
     @Override
     public void saveTask(TaskRequestDto taskRequestDto) {
         TaskModel taskModel = taskRequestMapper.toModel(taskRequestDto);

@@ -1,10 +1,13 @@
 package com.playko.projectManagement.infrastructure.output.jpa.mapper;
 
+import com.playko.projectManagement.application.dto.request.task.TaskRequestDto;
 import com.playko.projectManagement.domain.model.TaskModel;
 import com.playko.projectManagement.infrastructure.output.jpa.entity.TaskEntity;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.ReportingPolicy;
+
+import java.util.List;
 
 @Mapper(componentModel = "spring",
         unmappedTargetPolicy = ReportingPolicy.IGNORE,
@@ -14,4 +17,6 @@ public interface ITaskEntityMapper {
     @Mapping(source = "boardColumn", target = "boardColumn.id")
     @Mapping(source = "assignedUserId", target = "assignedUser.id")
     TaskEntity toEntity(TaskModel model);
+
+    List<TaskModel> toDtoList(List<TaskEntity> taskEntities);
 }

@@ -20,9 +20,7 @@
 - **HU13**: Como manager, quiero crear subtareas dentro de una tarea para dividir actividades más grandes.
 - **HU14**: Como contribuidor, quiero actualizar el estado de una tarea para reflejar su progreso.
 - **HU15**: Como contribuidor, quiero visualizar solo las tareas que tengo asignadas para enfocarme en mi trabajo.
-- **HU16**: Como contribuidor, quiero buscar tareas por palabra clave para encontrarlas fácilmente.
 - **HU17**: Como contribuidor, quiero comentar en una tarea para discutir detalles con mi equipo.
-- **HU18**: Como usuario, quiero adjuntar archivos a una tarea para compartir documentos relevantes.
 - **HU19**: Como usuario, quiero recibir notificaciones cuando se me asigne una nueva tarea.
 - **HU20**: Como usuario, quiero recibir un recordatorio de tareas próximas a vencer.
 - **HU21**: Como usuario, quiero marcar notificaciones como leídas para gestionar mejor mis pendientes.
@@ -32,19 +30,23 @@
 - **HU23**: Como manager, quiero agregar nuevas columnas personalizadas al tablero Kanban.
 - **HU24**: Como usuario, quiero filtrar tareas en el tablero Kanban por prioridad o estado.
 - **HU25**: Como usuario, quiero visualizar estadísticas básicas del proyecto, como porcentaje completado.
-- **HU26**: Como manager, quiero generar reportes de rendimiento del equipo para analizar la eficiencia.
 - **HU27**: Como observador, quiero visualizar el progreso del proyecto sin realizar modificaciones.
 - **HU28**: Como observador, quiero exportar reportes del estado del proyecto para compartirlos externamente.
 
 ## Comunicación y Colaboración
-- **HU29**: Como usuario, quiero enviar mensajes a mi equipo a través del chat integrado.
 - **HU30**: Como usuario, quiero recibir alertas en tiempo real sobre cambios en proyectos o tareas.
 
 ## Integraciones y Tiempo
 - **HU31**: Como usuario, quiero registrar el tiempo empleado en una tarea para seguimiento del rendimiento.
-- **HU32**: Como usuario, quiero sincronizar mis tareas con un calendario externo (e.g., Google Calendar).
 
 ## Gestión Avanzada
 - **HU33**: Como manager, quiero eliminar tareas o subtareas que ya no sean necesarias.
 - **HU34**: Como manager, quiero restringir el acceso de ciertos usuarios a proyectos específicos.
 - **HU35**: Como usuario, quiero recibir un resumen semanal del estado de mis proyectos por correo electrónico.
+
+## Historias Movidas al Final
+- **HU16**: Como contribuidor, quiero buscar tareas por palabra clave para encontrarlas fácilmente.
+- **HU18**: Como usuario, quiero adjuntar archivos a una tarea para compartir documentos relevantes.
+- **HU26**: Como manager, quiero generar reportes de rendimiento del equipo para analizar la eficiencia.
+- **HU29**: Como usuario, quiero enviar mensajes a mi equipo a través del correo.
+- **HU32**: Como usuario, quiero sincronizar mis tareas con un calendario externo (e.g., Google Calendar).

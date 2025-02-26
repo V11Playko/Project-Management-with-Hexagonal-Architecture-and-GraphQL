@@ -11,7 +11,7 @@ import java.util.Properties;
 
 @Configuration
 @PropertySource("classpath:email.properties")
-public class MailConfig {
+public class MailConfiguration {
 
     @Value("${email.username}")
     private String email;

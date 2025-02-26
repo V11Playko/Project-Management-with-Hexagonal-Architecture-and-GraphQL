@@ -1,5 +1,7 @@
 package com.playko.projectManagement.infrastructure.output.jpa.adapter;
 
+import com.playko.projectManagement.application.dto.request.EmailRequestDto;
+import com.playko.projectManagement.application.handler.IEmailHandler;
 import com.playko.projectManagement.domain.model.TaskModel;
 import com.playko.projectManagement.domain.spi.ITaskPersistencePort;
 import com.playko.projectManagement.infrastructure.configuration.security.userDetails.CustomUserDetails;
@@ -16,6 +18,7 @@ import com.playko.projectManagement.infrastructure.output.jpa.repository.IBoardC
 import com.playko.projectManagement.infrastructure.output.jpa.repository.IProjectRepository;
 import com.playko.projectManagement.infrastructure.output.jpa.repository.ITaskRepository;
 import com.playko.projectManagement.infrastructure.output.jpa.repository.IUserRepository;
+import com.playko.projectManagement.shared.constants.Exceptions;
 import com.playko.projectManagement.shared.enums.TaskState;
 import lombok.RequiredArgsConstructor;
 import org.springframework.scheduling.config.Task;
@@ -32,6 +35,7 @@ public class TaskJpaAdapter implements ITaskPersistencePort {
     private final IBoardColumnRepository boardColumnRepository;
     private final IUserRepository userRepository;
     private final ITaskEntityMapper taskEntityMapper;
+    private final IEmailHandler emailHandler;
 
     @Override
     public List<TaskModel> getTasksByUserEmail() {
@@ -66,6 +70,15 @@ public class TaskJpaAdapter implements ITaskPersistencePort {
                 .orElseThrow(TaskNotFoundException::new);
         UserEntity userEntity = userRepository.findById(userId)
                 .orElseThrow(UserNotFoundException::new);
+
+        EmailRequestDto emailRequestDto = new EmailRequestDto();
+        emailRequestDto.setDestinatario(userEntity.getEmail());
+        emailRequestDto.setAsunto(Exceptions.AFFAIR_NEW_TASK_ASSIGNMENT);
+        String message = String.format(
+                "Hola %s,\n\nSe te ha asignado la tarea número %d. Para más información, comunícate con el manager de equipo.\n\nSaludos.",
+                userEntity.getName(), taskId
+        );        emailRequestDto.setMensaje(message);
+        emailHandler.sendEmail(emailRequestDto);
 
         taskEntity.setAssignedUser(userEntity);
         taskRepository.save(taskEntity);

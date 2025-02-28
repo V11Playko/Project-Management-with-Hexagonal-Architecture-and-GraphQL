@@ -6,11 +6,15 @@ import com.playko.projectManagement.application.handler.ISubTaskHandler;
 import com.playko.projectManagement.application.mapper.request.ISubTaskRequestMapper;
 import com.playko.projectManagement.domain.api.ISubTaskServicePort;
 import com.playko.projectManagement.domain.model.SubTaskModel;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
 @RequiredArgsConstructor
+@Transactional
 public class SubTaskHandler implements ISubTaskHandler {
     private final ISubTaskServicePort subTaskServicePort;
     private final ISubTaskRequestMapper subTaskRequestMapper;

@@ -1,5 +1,6 @@
 package com.playko.projectManagement.infrastructure.configuration.security.userDetails;
 
+import com.playko.projectManagement.infrastructure.exception.UserNotFoundException;
 import com.playko.projectManagement.infrastructure.output.jpa.entity.RoleEntity;
 import com.playko.projectManagement.infrastructure.output.jpa.entity.UserEntity;
 import com.playko.projectManagement.infrastructure.output.jpa.repository.IUserRepository;
@@ -20,7 +21,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        UserEntity user = this.userRepository.findByEmail(email);
+        UserEntity user = this.userRepository.findByEmail(email).orElseThrow(UserNotFoundException::new);
 
         List<UserEntity> userEntity = userRepository.findAllById(Collections.singleton(user.getId()));
 

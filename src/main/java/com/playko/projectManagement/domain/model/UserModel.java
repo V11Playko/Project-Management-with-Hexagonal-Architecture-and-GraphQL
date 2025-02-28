@@ -13,6 +13,10 @@ public class UserModel {
     private RoleModel roleModel;
     private TeamModel team;
 
+    public UserModel() {
+
+    }
+
     public String HashedPassword(String password) {
         String hashedPassword = BCrypt.hashpw(this.password, BCrypt.gensalt());
         return hashedPassword;

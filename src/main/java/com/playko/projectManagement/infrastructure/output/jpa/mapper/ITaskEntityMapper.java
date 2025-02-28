@@ -13,9 +13,9 @@ import java.util.List;
         unmappedTargetPolicy = ReportingPolicy.IGNORE,
         unmappedSourcePolicy = ReportingPolicy.IGNORE)
 public interface ITaskEntityMapper {
-    @Mapping(source = "project", target = "project.id")
-    @Mapping(source = "boardColumn", target = "boardColumn.id")
-    @Mapping(source = "assignedUserId", target = "assignedUser.id")
+    @Mapping(source = "project.id", target = "project.id")
+    @Mapping(source = "boardColumn.id", target = "boardColumn.id")
+    @Mapping(source = "assignedUserId.id", target = "assignedUser.id")
     TaskEntity toEntity(TaskModel model);
 
     List<TaskModel> toDtoList(List<TaskEntity> taskEntities);

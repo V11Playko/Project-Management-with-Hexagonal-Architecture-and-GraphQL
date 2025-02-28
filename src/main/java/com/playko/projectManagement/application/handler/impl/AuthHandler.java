@@ -5,6 +5,7 @@ import com.playko.projectManagement.application.dto.response.JwtTokenResponseDto
 import com.playko.projectManagement.application.handler.IAuthHandler;
 import com.playko.projectManagement.infrastructure.configuration.security.jwt.JwtUtils;
 import com.playko.projectManagement.infrastructure.configuration.security.userDetails.CustomUserDetails;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -18,6 +19,7 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class AuthHandler implements IAuthHandler {
     private final JwtUtils jwtUtils;
     private final AuthenticationManager authenticationManager;

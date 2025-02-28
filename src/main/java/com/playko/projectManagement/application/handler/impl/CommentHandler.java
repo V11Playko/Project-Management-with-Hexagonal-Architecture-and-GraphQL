@@ -6,12 +6,16 @@ import com.playko.projectManagement.application.handler.ICommentHandler;
 import com.playko.projectManagement.application.mapper.request.ICommentRequestMapper;
 import com.playko.projectManagement.domain.api.ICommentServicePort;
 import com.playko.projectManagement.domain.model.CommentModel;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Service
 @RequiredArgsConstructor
+@Transactional
 public class CommentHandler implements ICommentHandler {
     private final ICommentServicePort commentServicePort;
     private final ICommentRequestMapper commentRequestMapper;

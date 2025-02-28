@@ -21,11 +21,15 @@ import com.playko.projectManagement.infrastructure.output.jpa.repository.IUserRe
 import com.playko.projectManagement.shared.constants.Exceptions;
 import com.playko.projectManagement.shared.enums.TaskState;
 import lombok.RequiredArgsConstructor;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.scheduling.config.Task;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -110,6 +114,26 @@ public class TaskJpaAdapter implements ITaskPersistencePort {
         taskEntity.setState(newState);
         taskRepository.save(taskEntity);
     }
+
+    @Scheduled(cron = "0 0 8 * * ?", zone = "America/New_York")
+    public void sendTaskReminders() {
+        ZonedDateTime now = ZonedDateTime.now(ZoneId.of("America/New_York"));
+        LocalDateTime startOfToday = now.toLocalDate().atStartOfDay();
+        LocalDateTime endOfTomorrow = now.toLocalDate().plusDays(1).atTime(23, 59, 59);
+
+        List<TaskEntity> tasks = taskRepository.findTasksDueSoon(startOfToday, endOfTomorrow);
+        tasks.stream()
+                .filter(task -> task.getAssignedUser() != null)
+                .forEach(task -> {
+                    EmailRequestDto emailRequestDto = new EmailRequestDto();
+                    emailRequestDto.setDestinatario(task.getAssignedUser().getEmail());
+                    emailRequestDto.setAsunto("Recordatorio: Tarea próxima a vencer");
+                    emailRequestDto.setMensaje("La tarea '" + task.getTitle() + "' vence el " + task.getLimitDate() + ".");
+                    emailHandler.sendEmail(emailRequestDto);
+                });
+    }
+
+
 
     public String obtenerCorreoDelToken() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();

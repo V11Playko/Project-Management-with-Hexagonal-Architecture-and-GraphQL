@@ -35,6 +35,10 @@ public class TaskModel {
         this.assignedUserId = assignedUserId;
     }
 
+    public TaskModel() {
+
+    }
+
     public Long getId() {
         return id;
     }

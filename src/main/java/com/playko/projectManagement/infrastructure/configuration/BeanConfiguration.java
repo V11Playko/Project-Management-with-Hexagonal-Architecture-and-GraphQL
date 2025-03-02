@@ -1,6 +1,8 @@
 package com.playko.projectManagement.infrastructure.configuration;
 
 import com.playko.projectManagement.application.handler.IEmailHandler;
+import com.playko.projectManagement.application.handler.impl.EmailHandler;
+import com.playko.projectManagement.domain.api.IBoardServicePort;
 import com.playko.projectManagement.domain.api.ICommentServicePort;
 import com.playko.projectManagement.domain.api.IEmailServicePort;
 import com.playko.projectManagement.domain.api.IProjectServicePort;
@@ -10,6 +12,7 @@ import com.playko.projectManagement.domain.api.ITaskServicePort;
 import com.playko.projectManagement.domain.api.ITeamServicePort;
 import com.playko.projectManagement.domain.api.IUserServicePort;
 import com.playko.projectManagement.domain.spi.IAuthPasswordEncoderPort;
+import com.playko.projectManagement.domain.spi.IBoardPersistencePort;
 import com.playko.projectManagement.domain.spi.ICommentPersistencePort;
 import com.playko.projectManagement.domain.spi.IEmailPersistencePort;
 import com.playko.projectManagement.domain.spi.IProjectPersistencePort;
@@ -18,6 +21,7 @@ import com.playko.projectManagement.domain.spi.ISubTaskPersistencePort;
 import com.playko.projectManagement.domain.spi.ITaskPersistencePort;
 import com.playko.projectManagement.domain.spi.ITeamPersistencePort;
 import com.playko.projectManagement.domain.spi.IUserPersistencePort;
+import com.playko.projectManagement.domain.usecase.BoardUseCase;
 import com.playko.projectManagement.domain.usecase.CommentUseCase;
 import com.playko.projectManagement.domain.usecase.EmailUseCase;
 import com.playko.projectManagement.domain.usecase.ProjectUseCase;
@@ -26,6 +30,7 @@ import com.playko.projectManagement.domain.usecase.SubTaskUseCase;
 import com.playko.projectManagement.domain.usecase.TaskUseCase;
 import com.playko.projectManagement.domain.usecase.TeamUseCase;
 import com.playko.projectManagement.domain.usecase.UserUseCase;
+import com.playko.projectManagement.infrastructure.output.jpa.adapter.BoardJpaAdapter;
 import com.playko.projectManagement.infrastructure.output.jpa.adapter.CommentJpaAdapter;
 import com.playko.projectManagement.infrastructure.output.jpa.adapter.EmailJpaAdapter;
 import com.playko.projectManagement.infrastructure.output.jpa.adapter.ProjectJpaAdapter;
@@ -34,6 +39,7 @@ import com.playko.projectManagement.infrastructure.output.jpa.adapter.SubTaskJpa
 import com.playko.projectManagement.infrastructure.output.jpa.adapter.TaskJpaAdapter;
 import com.playko.projectManagement.infrastructure.output.jpa.adapter.TeamJpaAdapter;
 import com.playko.projectManagement.infrastructure.output.jpa.adapter.UserJpaAdapter;
+import com.playko.projectManagement.infrastructure.output.jpa.mapper.IBoardEntityMapper;
 import com.playko.projectManagement.infrastructure.output.jpa.mapper.ICommentEntityMapper;
 import com.playko.projectManagement.infrastructure.output.jpa.mapper.IProjectEntityMapper;
 import com.playko.projectManagement.infrastructure.output.jpa.mapper.IRoleEntityMapper;
@@ -42,6 +48,7 @@ import com.playko.projectManagement.infrastructure.output.jpa.mapper.ITaskEntity
 import com.playko.projectManagement.infrastructure.output.jpa.mapper.ITeamEntityMapper;
 import com.playko.projectManagement.infrastructure.output.jpa.mapper.IUserEntityMapper;
 import com.playko.projectManagement.infrastructure.output.jpa.repository.IBoardColumnRepository;
+import com.playko.projectManagement.infrastructure.output.jpa.repository.IBoardRepository;
 import com.playko.projectManagement.infrastructure.output.jpa.repository.ICommentRepository;
 import com.playko.projectManagement.infrastructure.output.jpa.repository.IProjectRepository;
 import com.playko.projectManagement.infrastructure.output.jpa.repository.IRoleRepository;
@@ -90,8 +97,8 @@ public class BeanConfiguration {
     }
 
     @Bean
-    public ITeamPersistencePort teamPersistencePort(ITeamRepository teamRepository, ITeamEntityMapper teamEntityMapper, IUserRepository userRepository) {
-        return new TeamJpaAdapter(teamRepository, teamEntityMapper, userRepository);
+    public ITeamPersistencePort teamPersistencePort(ITeamRepository teamRepository, ITeamEntityMapper teamEntityMapper, IUserRepository userRepository, EmailHandler emailHandler) {
+        return new TeamJpaAdapter(teamRepository, teamEntityMapper, userRepository, emailHandler);
     }
 
     @Bean
@@ -153,4 +160,15 @@ public class BeanConfiguration {
     public ICommentServicePort commentServicePort(ICommentPersistencePort commentPersistencePort) {
         return new CommentUseCase(commentPersistencePort);
     }
+
+    @Bean
+    public IBoardPersistencePort boardPersistencePort(IBoardRepository boardRepository, IBoardEntityMapper boardEntityMapper) {
+        return new BoardJpaAdapter(boardRepository, boardEntityMapper);
+    }
+    @Bean
+    public IBoardServicePort boardServicePort(IBoardPersistencePort boardPersistencePort) {
+        return new BoardUseCase(boardPersistencePort);
+    }
+
+
 }

@@ -23,7 +23,7 @@
 - **HU17**: Como contribuidor, quiero comentar en una tarea para discutir detalles con mi equipo.
 - **HU19**: Como usuario, quiero recibir notificaciones cuando se me asigne una nueva tarea.
 - **HU20**: Como usuario, quiero recibir un recordatorio de tareas próximas a vencer.
-- **HU21**: Como usuario, quiero marcar notificaciones como leídas para gestionar mejor mis pendientes.
+- **HU21**: Como usuario, quiero recibir notificaciones cuando se me agregue a un equipo.
 
 ## Visualización y Organización (Kanban y Estadísticas)
 - **HU22**: Como usuario, quiero un tablero Kanban dinámico para gestionar mis tareas visualmente.

@@ -10,6 +10,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -31,6 +32,7 @@ public class CommentRestController {
             @ApiResponse(responseCode = "404", description = "Task or User not found")
     })
     @PostMapping
+    @PreAuthorize("hasAnyRole('MANAGER', 'USER')")
     public ResponseEntity<Void> addComment(@Valid @RequestBody CommentRequestDto request) {
         commentHandler.addComment(request);
         return new ResponseEntity<>(HttpStatus.CREATED);
@@ -42,6 +44,7 @@ public class CommentRestController {
             @ApiResponse(responseCode = "404", description = "Task not found")
     })
     @GetMapping("/{taskId}")
+    @PreAuthorize("hasAnyRole('MANAGER', 'USER')")
     public ResponseEntity<List<CommentResponseDto>> getCommentsByTask(@PathVariable Long taskId) {
         return new ResponseEntity<>(commentHandler.getCommentsByTask(taskId), HttpStatus.OK);
     }

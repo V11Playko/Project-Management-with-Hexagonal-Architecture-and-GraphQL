@@ -162,8 +162,8 @@ public class BeanConfiguration {
     }
 
     @Bean
-    public IBoardPersistencePort boardPersistencePort(IBoardRepository boardRepository, IBoardEntityMapper boardEntityMapper) {
-        return new BoardJpaAdapter(boardRepository, boardEntityMapper);
+    public IBoardPersistencePort boardPersistencePort(IBoardRepository boardRepository, IBoardEntityMapper boardEntityMapper,ITaskRepository taskRepository, IBoardColumnRepository boardColumnRepository) {
+        return new BoardJpaAdapter(boardRepository, boardEntityMapper, taskRepository, boardColumnRepository);
     }
     @Bean
     public IBoardServicePort boardServicePort(IBoardPersistencePort boardPersistencePort) {

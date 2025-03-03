@@ -19,4 +19,9 @@ public class BoardHandler implements IBoardHandler {
     public BoardResponseDto getBoardById(Long boardId) {
         return boardResponseMapper.toResponse(boardServicePort.getBoardById(boardId));
     }
+
+    @Override
+    public void moveTask(Long taskId, Long targetColumnId) {
+        boardServicePort.moveTask(taskId, targetColumnId);
+    }
 }

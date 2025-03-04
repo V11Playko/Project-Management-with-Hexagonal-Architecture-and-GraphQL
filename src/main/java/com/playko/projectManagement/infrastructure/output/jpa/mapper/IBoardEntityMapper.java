@@ -9,6 +9,6 @@ import org.mapstruct.ReportingPolicy;
         unmappedTargetPolicy = ReportingPolicy.IGNORE,
         unmappedSourcePolicy = ReportingPolicy.IGNORE)
 public interface IBoardEntityMapper {
-
+    BoardEntity toEntity(BoardModel boardModel);
     BoardModel toResponse(BoardEntity board);
 }

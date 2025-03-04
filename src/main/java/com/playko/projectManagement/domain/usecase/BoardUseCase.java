@@ -20,4 +20,9 @@ public class BoardUseCase implements IBoardServicePort {
     public void moveTask(Long taskId, Long targetColumnId) {
         boardPersistencePort.moveTask(taskId, targetColumnId);
     }
+
+    @Override
+    public void saveBoard(BoardModel boardModel) {
+        boardPersistencePort.saveBoard(boardModel);
+    }
 }

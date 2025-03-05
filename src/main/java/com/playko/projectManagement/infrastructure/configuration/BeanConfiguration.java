@@ -2,6 +2,7 @@ package com.playko.projectManagement.infrastructure.configuration;
 
 import com.playko.projectManagement.application.handler.IEmailHandler;
 import com.playko.projectManagement.application.handler.impl.EmailHandler;
+import com.playko.projectManagement.domain.api.IBoardColumnServicePort;
 import com.playko.projectManagement.domain.api.IBoardServicePort;
 import com.playko.projectManagement.domain.api.ICommentServicePort;
 import com.playko.projectManagement.domain.api.IEmailServicePort;
@@ -12,6 +13,7 @@ import com.playko.projectManagement.domain.api.ITaskServicePort;
 import com.playko.projectManagement.domain.api.ITeamServicePort;
 import com.playko.projectManagement.domain.api.IUserServicePort;
 import com.playko.projectManagement.domain.spi.IAuthPasswordEncoderPort;
+import com.playko.projectManagement.domain.spi.IBoardColumnPersistencePort;
 import com.playko.projectManagement.domain.spi.IBoardPersistencePort;
 import com.playko.projectManagement.domain.spi.ICommentPersistencePort;
 import com.playko.projectManagement.domain.spi.IEmailPersistencePort;
@@ -21,6 +23,7 @@ import com.playko.projectManagement.domain.spi.ISubTaskPersistencePort;
 import com.playko.projectManagement.domain.spi.ITaskPersistencePort;
 import com.playko.projectManagement.domain.spi.ITeamPersistencePort;
 import com.playko.projectManagement.domain.spi.IUserPersistencePort;
+import com.playko.projectManagement.domain.usecase.BoardColumnUseCase;
 import com.playko.projectManagement.domain.usecase.BoardUseCase;
 import com.playko.projectManagement.domain.usecase.CommentUseCase;
 import com.playko.projectManagement.domain.usecase.EmailUseCase;
@@ -30,6 +33,7 @@ import com.playko.projectManagement.domain.usecase.SubTaskUseCase;
 import com.playko.projectManagement.domain.usecase.TaskUseCase;
 import com.playko.projectManagement.domain.usecase.TeamUseCase;
 import com.playko.projectManagement.domain.usecase.UserUseCase;
+import com.playko.projectManagement.infrastructure.output.jpa.adapter.BoardColumnJpaAdapter;
 import com.playko.projectManagement.infrastructure.output.jpa.adapter.BoardJpaAdapter;
 import com.playko.projectManagement.infrastructure.output.jpa.adapter.CommentJpaAdapter;
 import com.playko.projectManagement.infrastructure.output.jpa.adapter.EmailJpaAdapter;
@@ -39,6 +43,7 @@ import com.playko.projectManagement.infrastructure.output.jpa.adapter.SubTaskJpa
 import com.playko.projectManagement.infrastructure.output.jpa.adapter.TaskJpaAdapter;
 import com.playko.projectManagement.infrastructure.output.jpa.adapter.TeamJpaAdapter;
 import com.playko.projectManagement.infrastructure.output.jpa.adapter.UserJpaAdapter;
+import com.playko.projectManagement.infrastructure.output.jpa.mapper.IBoardColumnEntityMapper;
 import com.playko.projectManagement.infrastructure.output.jpa.mapper.IBoardEntityMapper;
 import com.playko.projectManagement.infrastructure.output.jpa.mapper.ICommentEntityMapper;
 import com.playko.projectManagement.infrastructure.output.jpa.mapper.IProjectEntityMapper;
@@ -170,5 +175,14 @@ public class BeanConfiguration {
         return new BoardUseCase(boardPersistencePort);
     }
 
+    @Bean
+    public IBoardColumnPersistencePort boardColumnPersistencePort(IBoardRepository boardRepository, IBoardColumnRepository boardColumnRepository, IBoardColumnEntityMapper boardColumnEntityMapper) {
+        return new BoardColumnJpaAdapter(boardRepository, boardColumnRepository, boardColumnEntityMapper);
+    }
+
+    @Bean
+    public IBoardColumnServicePort boardColumnServicePort(IBoardColumnPersistencePort boardColumnPersistencePort) {
+        return new BoardColumnUseCase(boardColumnPersistencePort);
+    }
 
 }

@@ -9,6 +9,7 @@ import com.playko.projectManagement.application.handler.ITaskHandler;
 import com.playko.projectManagement.application.mapper.request.ITaskRequestMapper;
 import com.playko.projectManagement.domain.api.ITaskServicePort;
 import com.playko.projectManagement.domain.model.TaskModel;
+import com.playko.projectManagement.shared.enums.TaskPriority;
 import com.playko.projectManagement.shared.enums.TaskState;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -54,5 +55,10 @@ public class TaskHandler implements ITaskHandler {
     @Override
     public void updateTaskState(Long taskId, TaskState newState) {
         taskServicePort.updateTaskState(taskId, newState);
+    }
+
+    @Override
+    public List<TaskModel> getTasksByFilters(Long boardId, TaskState state, TaskPriority priority) {
+        return taskServicePort.getTasksByFilters(boardId, state, priority);
     }
 }

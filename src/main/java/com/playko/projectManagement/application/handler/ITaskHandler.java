@@ -5,6 +5,8 @@ import com.playko.projectManagement.application.dto.request.task.TaskDeadlineReq
 import com.playko.projectManagement.application.dto.request.task.TaskReassignmentRequestDto;
 import com.playko.projectManagement.application.dto.request.task.TaskRequestDto;
 import com.playko.projectManagement.application.dto.response.TaskResponseDto;
+import com.playko.projectManagement.domain.model.TaskModel;
+import com.playko.projectManagement.shared.enums.TaskPriority;
 import com.playko.projectManagement.shared.enums.TaskState;
 
 import java.util.List;
@@ -16,6 +18,7 @@ public interface ITaskHandler {
     void reassignTask(TaskReassignmentRequestDto taskReassignmentRequestDto);
     void updateTaskDeadline(TaskDeadlineRequestDto taskDeadlineRequestDto);
     void updateTaskState(Long taskId, TaskState newState);
+    List<TaskModel> getTasksByFilters(Long boardId, TaskState state, TaskPriority priority);
 
 
 }

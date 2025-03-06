@@ -3,6 +3,7 @@ package com.playko.projectManagement.domain.usecase;
 import com.playko.projectManagement.domain.api.ITaskServicePort;
 import com.playko.projectManagement.domain.model.TaskModel;
 import com.playko.projectManagement.domain.spi.ITaskPersistencePort;
+import com.playko.projectManagement.shared.enums.TaskPriority;
 import com.playko.projectManagement.shared.enums.TaskState;
 
 import java.time.LocalDate;
@@ -43,5 +44,10 @@ public class TaskUseCase implements ITaskServicePort {
     @Override
     public void updateTaskState(Long taskId, TaskState newState) {
         taskPersistencePort.updateTaskState(taskId, newState);
+    }
+
+    @Override
+    public List<TaskModel> getTasksByFilters(Long boardId, TaskState state, TaskPriority priority) {
+        return taskPersistencePort.getTasksByFilters(boardId, state, priority);
     }
 }

@@ -1,6 +1,7 @@
 package com.playko.projectManagement.domain.api;
 
 import com.playko.projectManagement.domain.model.TaskModel;
+import com.playko.projectManagement.shared.enums.TaskPriority;
 import com.playko.projectManagement.shared.enums.TaskState;
 
 import java.time.LocalDate;
@@ -13,5 +14,7 @@ public interface ITaskServicePort {
     void reassignTask(Long taskId, Long newUserId);
     void updateTaskDeadline(Long taskId, LocalDate deadline);
     void updateTaskState(Long taskId, TaskState newState);
+    List<TaskModel> getTasksByFilters(Long boardId, TaskState state, TaskPriority priority);
+
 
 }

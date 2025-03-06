@@ -19,6 +19,7 @@ import com.playko.projectManagement.infrastructure.output.jpa.repository.IProjec
 import com.playko.projectManagement.infrastructure.output.jpa.repository.ITaskRepository;
 import com.playko.projectManagement.infrastructure.output.jpa.repository.IUserRepository;
 import com.playko.projectManagement.shared.constants.Exceptions;
+import com.playko.projectManagement.shared.enums.TaskPriority;
 import com.playko.projectManagement.shared.enums.TaskState;
 import lombok.RequiredArgsConstructor;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -31,6 +32,7 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 public class TaskJpaAdapter implements ITaskPersistencePort {
@@ -113,6 +115,25 @@ public class TaskJpaAdapter implements ITaskPersistencePort {
                 .orElseThrow(TaskNotFoundException::new);
         taskEntity.setState(newState);
         taskRepository.save(taskEntity);
+    }
+
+    @Override
+    public List<TaskModel> getTasksByFilters(Long boardId, TaskState state, TaskPriority priority) {
+        List<TaskEntity> taskEntities;
+
+        if (state != null && priority != null) {
+            taskEntities = taskRepository.findByBoardColumn_Board_IdAndStateAndPriority(boardId, state, priority);
+        } else if (state != null) {
+            taskEntities = taskRepository.findByBoardColumn_Board_IdAndState(boardId, state);
+        } else if (priority != null) {
+            taskEntities = taskRepository.findByBoardColumn_Board_IdAndPriority(boardId, priority);
+        } else {
+            taskEntities = taskRepository.findByBoardColumn_Board_IdAndState(boardId, TaskState.TO_DO); // Default filter
+        }
+
+        return taskEntities.stream()
+                .map(taskEntityMapper::toModel)
+                .collect(Collectors.toList());
     }
 
     @Scheduled(cron = "0 0 8 * * ?", zone = "America/New_York")

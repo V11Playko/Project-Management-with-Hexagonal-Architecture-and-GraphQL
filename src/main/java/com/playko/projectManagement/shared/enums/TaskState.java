@@ -6,7 +6,7 @@ import lombok.NoArgsConstructor;
 
 @Getter
 public enum TaskState {
-    TO_DO,
+    PENDING,
     IN_PROGRESS,
     DONE
 }

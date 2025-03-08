@@ -2,6 +2,7 @@ package com.playko.projectManagement.application.handler.impl;
 
 import com.playko.projectManagement.application.dto.request.ProjectDeadlineRequestDto;
 import com.playko.projectManagement.application.dto.request.ProjectRequestDto;
+import com.playko.projectManagement.application.dto.response.ProjectStatsDto;
 import com.playko.projectManagement.application.handler.IProjectHandler;
 import com.playko.projectManagement.application.mapper.request.IProjectRequestMapper;
 import com.playko.projectManagement.domain.api.IProjectServicePort;
@@ -33,5 +34,10 @@ public class ProjectHandler implements IProjectHandler {
     @Override
     public void archiveProject(Long projectId) {
         projectServicePort.archiveProject(projectId);
+    }
+
+    @Override
+    public ProjectStatsDto getProjectStats(Long projectId) {
+        return projectServicePort.getProjectStats(projectId);
     }
 }

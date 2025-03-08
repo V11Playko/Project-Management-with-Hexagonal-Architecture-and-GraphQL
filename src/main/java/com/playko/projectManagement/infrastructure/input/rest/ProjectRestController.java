@@ -2,6 +2,7 @@ package com.playko.projectManagement.infrastructure.input.rest;
 
 import com.playko.projectManagement.application.dto.request.ProjectDeadlineRequestDto;
 import com.playko.projectManagement.application.dto.request.ProjectRequestDto;
+import com.playko.projectManagement.application.dto.response.ProjectStatsDto;
 import com.playko.projectManagement.application.handler.IProjectHandler;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -12,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -62,5 +64,18 @@ public class ProjectRestController {
     public ResponseEntity<Void> archiveProject(@PathVariable Long projectId) {
         projectHandler.archiveProject(projectId);
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @Operation(summary = "Get project stats")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Get project stats"),
+            @ApiResponse(responseCode = "404", description = "Stats not found"),
+            @ApiResponse(responseCode = "403", description = "User not authorized")
+    })
+    @PreAuthorize("hasRole('USER')")
+    @GetMapping("/stats/{projectId}")
+    public ResponseEntity<ProjectStatsDto> getProjectStats(@PathVariable Long projectId) {
+        ProjectStatsDto stats = projectHandler.getProjectStats(projectId);
+        return ResponseEntity.ok(stats);
     }
 }

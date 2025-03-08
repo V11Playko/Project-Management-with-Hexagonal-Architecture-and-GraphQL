@@ -1,9 +1,13 @@
 package com.playko.projectManagement.domain.model;
 
 import com.playko.projectManagement.shared.enums.ProjectState;
+import com.playko.projectManagement.shared.enums.TaskState;
 
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 public class ProjectModel {
     private Long id;
@@ -98,5 +102,54 @@ public class ProjectModel {
 
     public void setTasks(List<TaskModel> tasks) {
         this.tasks = tasks;
+    }
+
+    public double getCompletionPercentage() {
+        if (tasks == null || tasks.isEmpty()) {
+            return 0.0;
+        }
+
+        long completedTasks = tasks.stream()
+                .filter(task -> task.getState() == TaskState.DONE)
+                .count();
+
+        return (double) completedTasks / tasks.size() * 100;
+    }
+
+    public long getDaysRemaining() {
+        if (finishedDate == null) {
+            return -1; // Si no hay fecha límite definida
+        }
+
+        return ChronoUnit.DAYS.between(LocalDate.now(), finishedDate);
+    }
+
+    public String getProgressStatus() {
+        if (finishedDate == null || tasks.isEmpty()) {
+            return "No disponible";
+        }
+
+        double daysPassed = ChronoUnit.DAYS.between(creationDate, LocalDate.now());
+        double totalDuration = ChronoUnit.DAYS.between(creationDate, finishedDate);
+        double expectedCompletion = (daysPassed / totalDuration) * 100;
+        double actualCompletion = getCompletionPercentage();
+
+        if (actualCompletion >= expectedCompletion) {
+            return "A tiempo";
+        } else {
+            return "Atrasado";
+        }
+    }
+
+    public Map<TaskState, Long> getTaskCountsByState() {
+        if (tasks == null || tasks.isEmpty()) {
+            return Map.of(
+                    TaskState.DONE, 0L,
+                    TaskState.IN_PROGRESS, 0L,
+                    TaskState.IN_PROGRESS, 0L
+            );
+        }
+
+        return tasks.stream().collect(Collectors.groupingBy(TaskModel::getState, Collectors.counting()));
     }
 }

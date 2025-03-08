@@ -128,7 +128,7 @@ public class TaskJpaAdapter implements ITaskPersistencePort {
         } else if (priority != null) {
             taskEntities = taskRepository.findByBoardColumn_Board_IdAndPriority(boardId, priority);
         } else {
-            taskEntities = taskRepository.findByBoardColumn_Board_IdAndState(boardId, TaskState.TO_DO); // Default filter
+            taskEntities = taskRepository.findByBoardColumn_Board_IdAndState(boardId, TaskState.PENDING); // Default filter
         }
 
         return taskEntities.stream()

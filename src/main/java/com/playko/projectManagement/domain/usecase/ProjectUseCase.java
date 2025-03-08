@@ -1,5 +1,6 @@
 package com.playko.projectManagement.domain.usecase;
 
+import com.playko.projectManagement.application.dto.response.ProjectStatsDto;
 import com.playko.projectManagement.domain.api.IProjectServicePort;
 import com.playko.projectManagement.domain.model.ProjectModel;
 import com.playko.projectManagement.domain.spi.IProjectPersistencePort;
@@ -29,5 +30,10 @@ public class ProjectUseCase implements IProjectServicePort {
     @Override
     public void archiveProject(Long projectId) {
         projectPersistencePort.archiveProject(projectId);
+    }
+
+    @Override
+    public ProjectStatsDto getProjectStats(Long projectId) {
+        return projectPersistencePort.getProjectStats(projectId);
     }
 }

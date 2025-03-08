@@ -1,5 +1,6 @@
 package com.playko.projectManagement.infrastructure.output.jpa.adapter;
 
+import com.playko.projectManagement.application.dto.response.ProjectStatsDto;
 import com.playko.projectManagement.domain.model.ProjectModel;
 import com.playko.projectManagement.domain.spi.IProjectPersistencePort;
 import com.playko.projectManagement.infrastructure.exception.InvalidProjectStateException;
@@ -15,9 +16,11 @@ import com.playko.projectManagement.infrastructure.output.jpa.repository.IUserRe
 import com.playko.projectManagement.shared.constants.RolesId;
 import com.playko.projectManagement.shared.enums.ProjectState;
 import com.playko.projectManagement.shared.enums.RoleEnum;
+import com.playko.projectManagement.shared.enums.TaskState;
 import lombok.RequiredArgsConstructor;
 
 import java.time.LocalDate;
+import java.util.Map;
 
 @RequiredArgsConstructor
 public class ProjectJpaAdapter implements IProjectPersistencePort {
@@ -59,5 +62,30 @@ public class ProjectJpaAdapter implements IProjectPersistencePort {
 
         project.setState(ProjectState.ARCHIVED);
         projectRepository.save(project);
+    }
+
+    @Override
+    public ProjectStatsDto getProjectStats(Long projectId) {
+        ProjectEntity projectEntity = projectRepository.findById(projectId)
+                .orElseThrow(ProjectNotFoundException::new);
+        ProjectModel project = projectEntityMapper.toModel(projectEntity);
+
+        long daysRemaining = project.getDaysRemaining();
+        String progressStatus = project.getProgressStatus();
+        Map<TaskState, Long> taskCounts = project.getTaskCountsByState();
+
+        return new ProjectStatsDto(
+                project.getId(),
+                project.getName(),
+                project.getCompletionPercentage(),
+                daysRemaining,
+                progressStatus,
+                taskCounts.getOrDefault(TaskState.IN_PROGRESS, 0L).intValue()
+                        + taskCounts.getOrDefault(TaskState.IN_PROGRESS, 0L).intValue()
+                        + taskCounts.getOrDefault(TaskState.DONE, 0L).intValue(),
+                taskCounts.getOrDefault(TaskState.DONE, 0L).intValue(),
+                taskCounts.getOrDefault(TaskState.IN_PROGRESS, 0L).intValue(),
+                taskCounts.getOrDefault(TaskState.PENDING, 0L).intValue()
+        );
     }
 }

@@ -78,4 +78,11 @@ public class ProjectRestController {
         ProjectStatsDto stats = projectHandler.getProjectStats(projectId);
         return ResponseEntity.ok(stats);
     }
+
+    @PreAuthorize("hasRole('OBSERVER')")
+    @GetMapping("/progress/{projectId}")
+    public ResponseEntity<ProjectStatsDto> getProjectProgress(@PathVariable Long projectId) {
+        ProjectStatsDto stats = projectHandler.getProjectStats(projectId);
+        return ResponseEntity.ok(stats);
+    }
 }

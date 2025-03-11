@@ -83,7 +83,8 @@ public class TaskJpaAdapter implements ITaskPersistencePort {
         String message = String.format(
                 "Hola %s,\n\nSe te ha asignado la tarea número %d. Para más información, comunícate con el manager de equipo.\n\nSaludos.",
                 userEntity.getName(), taskId
-        );        emailRequestDto.setMensaje(message);
+        );
+        emailRequestDto.setMensaje(message);
         emailHandler.sendEmail(emailRequestDto);
 
         taskEntity.setAssignedUser(userEntity);
@@ -99,6 +100,13 @@ public class TaskJpaAdapter implements ITaskPersistencePort {
 
         task.setAssignedUser(newUser);
         taskRepository.save(task);
+
+        EmailRequestDto emailRequestDto = new EmailRequestDto();
+        emailRequestDto.setDestinatario(task.getAssignedUser().getEmail());
+        emailRequestDto.setAsunto("Nueva Tarea Asignada");
+        String message = String.format("Se te ha reasignado la tarea '%s'.", task.getTitle());
+        emailRequestDto.setMensaje(message);
+        emailHandler.sendEmail(emailRequestDto);
     }
 
     @Override
@@ -107,6 +115,13 @@ public class TaskJpaAdapter implements ITaskPersistencePort {
                 .orElseThrow(TaskNotFoundException::new);
         taskEntity.setLimitDate(deadline);
         taskRepository.save(taskEntity);
+
+        EmailRequestDto emailRequestDto = new EmailRequestDto();
+        emailRequestDto.setDestinatario(taskEntity.getAssignedUser().getEmail());
+        emailRequestDto.setAsunto("Actualización de Tarea");
+        String message = String.format("Se te ha reasignado la tarea '%s'.", taskEntity.getTitle());
+        emailRequestDto.setMensaje(message);
+        emailHandler.sendEmail(emailRequestDto);
     }
 
     @Override
@@ -115,6 +130,13 @@ public class TaskJpaAdapter implements ITaskPersistencePort {
                 .orElseThrow(TaskNotFoundException::new);
         taskEntity.setState(newState);
         taskRepository.save(taskEntity);
+
+        EmailRequestDto emailRequestDto = new EmailRequestDto();
+        emailRequestDto.setDestinatario(taskEntity.getAssignedUser().getEmail());
+        emailRequestDto.setAsunto("Cambio en Tarea");
+        String message = String.format("Se te ha reasignado la tarea '%s'.", taskEntity.getTitle());
+        emailRequestDto.setMensaje(message);
+        emailHandler.sendEmail(emailRequestDto);
     }
 
     @Override

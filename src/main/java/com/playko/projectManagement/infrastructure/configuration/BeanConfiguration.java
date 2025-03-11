@@ -130,8 +130,8 @@ public class BeanConfiguration {
 
     @Bean
     public ISubTaskPersistencePort subTaskPersistencePort(ISubTaskRepository subTaskRepository, ITaskRepository taskRepository,
-                                                          ISubTaskEntityMapper subTaskEntityMapper) {
-        return new SubTaskJpaAdapter(subTaskRepository, taskRepository, subTaskEntityMapper);
+                                                          ISubTaskEntityMapper subTaskEntityMapper, IEmailHandler emailHandler) {
+        return new SubTaskJpaAdapter(subTaskRepository, taskRepository, subTaskEntityMapper, emailHandler);
     }
 
     @Bean
@@ -141,8 +141,8 @@ public class BeanConfiguration {
 
     @Bean
     public IProjectPersistencePort projectPersistencePort(IProjectRepository projectRepository, IProjectEntityMapper projectEntityMapper,
-                                                          IUserRepository userRepository, IRoleRepository roleRepository) {
-        return new ProjectJpaAdapter(projectRepository, projectEntityMapper, userRepository, roleRepository);
+                                                          IUserRepository userRepository, IRoleRepository roleRepository, IEmailHandler emailHandler) {
+        return new ProjectJpaAdapter(projectRepository, projectEntityMapper, userRepository, roleRepository, emailHandler);
     }
 
     @Bean

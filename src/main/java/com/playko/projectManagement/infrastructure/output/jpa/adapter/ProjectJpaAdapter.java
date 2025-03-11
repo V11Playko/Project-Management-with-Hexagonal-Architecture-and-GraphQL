@@ -1,6 +1,8 @@
 package com.playko.projectManagement.infrastructure.output.jpa.adapter;
 
+import com.playko.projectManagement.application.dto.request.EmailRequestDto;
 import com.playko.projectManagement.application.dto.response.ProjectStatsDto;
+import com.playko.projectManagement.application.handler.IEmailHandler;
 import com.playko.projectManagement.domain.model.ProjectModel;
 import com.playko.projectManagement.domain.spi.IProjectPersistencePort;
 import com.playko.projectManagement.infrastructure.exception.InvalidProjectStateException;
@@ -13,6 +15,7 @@ import com.playko.projectManagement.infrastructure.output.jpa.mapper.IProjectEnt
 import com.playko.projectManagement.infrastructure.output.jpa.repository.IProjectRepository;
 import com.playko.projectManagement.infrastructure.output.jpa.repository.IRoleRepository;
 import com.playko.projectManagement.infrastructure.output.jpa.repository.IUserRepository;
+import com.playko.projectManagement.shared.constants.Exceptions;
 import com.playko.projectManagement.shared.constants.RolesId;
 import com.playko.projectManagement.shared.enums.ProjectState;
 import com.playko.projectManagement.shared.enums.RoleEnum;
@@ -28,6 +31,7 @@ public class ProjectJpaAdapter implements IProjectPersistencePort {
     private final IProjectEntityMapper projectEntityMapper;
     private final IUserRepository userRepository;
     private final IRoleRepository roleRepository;
+    private final IEmailHandler emailHandler;
 
     @Override
     public void createProject(ProjectModel projectModel) {
@@ -50,6 +54,15 @@ public class ProjectJpaAdapter implements IProjectPersistencePort {
                 .orElseThrow(ProjectNotFoundException::new);
         project.setFinishedDate(deadline);
         projectRepository.save(project);
+
+        EmailRequestDto emailRequestDto = new EmailRequestDto();
+        emailRequestDto.setDestinatario(project.getOwner());
+        emailRequestDto.setAsunto("Actualización de Proyecto");
+        String message = String.format("El proyecto '%s' ha actualizado su fecha límite a %s.",
+                project.getName(), deadline);
+        emailRequestDto.setMensaje(message);
+        emailHandler.sendEmail(emailRequestDto);
+
     }
 
     @Override
@@ -62,6 +75,13 @@ public class ProjectJpaAdapter implements IProjectPersistencePort {
 
         project.setState(ProjectState.ARCHIVED);
         projectRepository.save(project);
+
+        EmailRequestDto emailRequestDto = new EmailRequestDto();
+        emailRequestDto.setDestinatario(project.getOwner());
+        emailRequestDto.setAsunto("Proyecto Archivado");
+        String message = String.format("El proyecto '%s' ha sido archivado.", project.getName());
+        emailRequestDto.setMensaje(message);
+        emailHandler.sendEmail(emailRequestDto);
     }
 
     @Override

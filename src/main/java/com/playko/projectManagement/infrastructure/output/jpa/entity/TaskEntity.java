@@ -11,6 +11,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -41,6 +42,7 @@ public class TaskEntity {
     private TaskPriority priority;
 
     private LocalDate limitDate;
+    private LocalDate creationDate;
 
     @ManyToOne
     @JoinColumn(name = "project_id", nullable = false)
@@ -56,4 +58,9 @@ public class TaskEntity {
     @ManyToOne
     @JoinColumn(name = "assigned_user_id")
     private UserEntity assignedUser;
+
+    @PrePersist
+    protected void onCreate() {
+        this.creationDate = LocalDate.now(); // Se inicializa con la fecha actual
+    }
 }

@@ -50,4 +50,9 @@ public class TaskUseCase implements ITaskServicePort {
     public List<TaskModel> getTasksByFilters(Long boardId, TaskState state, TaskPriority priority) {
         return taskPersistencePort.getTasksByFilters(boardId, state, priority);
     }
+
+    @Override
+    public long calculateTaskDuration(Long taskId) {
+        return taskPersistencePort.calculateTaskDuration(taskId);
+    }
 }

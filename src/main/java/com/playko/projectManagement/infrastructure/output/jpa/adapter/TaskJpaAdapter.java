@@ -6,6 +6,7 @@ import com.playko.projectManagement.domain.model.TaskModel;
 import com.playko.projectManagement.domain.spi.ITaskPersistencePort;
 import com.playko.projectManagement.infrastructure.configuration.security.userDetails.CustomUserDetails;
 import com.playko.projectManagement.infrastructure.exception.BoardColumnNotFoundException;
+import com.playko.projectManagement.infrastructure.exception.InvalidTaskStateException;
 import com.playko.projectManagement.infrastructure.exception.ProjectNotFoundException;
 import com.playko.projectManagement.infrastructure.exception.TaskNotFoundException;
 import com.playko.projectManagement.infrastructure.exception.UserNotFoundException;
@@ -31,6 +32,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -156,6 +158,20 @@ public class TaskJpaAdapter implements ITaskPersistencePort {
         return taskEntities.stream()
                 .map(taskEntityMapper::toModel)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public long calculateTaskDuration(Long taskId) {
+        TaskEntity task = taskRepository.findById(taskId)
+                .orElseThrow(TaskNotFoundException::new);
+
+        if (!task.getState().equals(TaskState.DONE)) {
+            throw new InvalidTaskStateException();
+        }
+
+        long diasTomados = ChronoUnit.DAYS.between(task.getCreationDate(), LocalDate.now());
+
+        return diasTomados;
     }
 
     @Scheduled(cron = "0 0 8 * * ?", zone = "America/New_York")

@@ -17,22 +17,32 @@ public class TaskModel {
     @Enumerated(EnumType.STRING)
     private TaskPriority priority;
     private LocalDate limitDate;
+    private LocalDate creationDate;
     private ProjectModel project;
     private BoardColumnModel boardColumn;
     private List<SubTaskModel> subtasks;
     private UserModel assignedUserId;
 
-    public TaskModel(Long id, String title, String description, TaskState state, TaskPriority priority, LocalDate limitDate, ProjectModel project, BoardColumnModel boardColumn, List<SubTaskModel> subtasks, UserModel assignedUserId) {
+    public TaskModel(Long id, String title, String description, TaskState state, TaskPriority priority, LocalDate limitDate, LocalDate creationDate, ProjectModel project, BoardColumnModel boardColumn, List<SubTaskModel> subtasks, UserModel assignedUserId) {
         this.id = id;
         this.title = title;
         this.description = description;
         this.state = state;
         this.priority = priority;
         this.limitDate = limitDate;
+        this.creationDate = creationDate;
         this.project = project;
         this.boardColumn = boardColumn;
         this.subtasks = subtasks;
         this.assignedUserId = assignedUserId;
+    }
+
+    public LocalDate getCreationDate() {
+        return creationDate;
+    }
+
+    public void setCreationDate(LocalDate creationDate) {
+        this.creationDate = creationDate;
     }
 
     public TaskModel() {

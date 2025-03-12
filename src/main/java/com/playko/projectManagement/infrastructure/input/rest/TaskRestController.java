@@ -96,4 +96,12 @@ public class TaskRestController {
         taskHandler.updateTaskState(taskId, request.getNewState());
         return new ResponseEntity<>(HttpStatus.OK);
     }
+
+    @PreAuthorize("hasAnyRole('MANAGER', 'CONTRIBUTOR', 'USER')")
+    @GetMapping("/duration/{taskId}")
+    public ResponseEntity<String> getTaskDuration(@PathVariable Long taskId) {
+        long daysTaken = taskHandler.calculateTaskDuration(taskId);
+        String message = "Días empleados para completar la tarea: " + daysTaken;
+        return ResponseEntity.ok(message);
+    }
 }

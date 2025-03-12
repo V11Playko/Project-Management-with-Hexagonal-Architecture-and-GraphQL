@@ -61,4 +61,9 @@ public class TaskHandler implements ITaskHandler {
     public List<TaskModel> getTasksByFilters(Long boardId, TaskState state, TaskPriority priority) {
         return taskServicePort.getTasksByFilters(boardId, state, priority);
     }
+
+    @Override
+    public long calculateTaskDuration(Long taskId) {
+        return taskServicePort.calculateTaskDuration(taskId);
+    }
 }

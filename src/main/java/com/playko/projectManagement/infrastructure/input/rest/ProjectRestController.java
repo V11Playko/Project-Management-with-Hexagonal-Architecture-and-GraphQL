@@ -1,7 +1,7 @@
 package com.playko.projectManagement.infrastructure.input.rest;
 
-import com.playko.projectManagement.application.dto.request.ProjectDeadlineRequestDto;
-import com.playko.projectManagement.application.dto.request.ProjectRequestDto;
+import com.playko.projectManagement.application.dto.request.project.ProjectDeadlineRequestDto;
+import com.playko.projectManagement.application.dto.request.project.ProjectRequestDto;
 import com.playko.projectManagement.application.dto.response.ProjectStatsDto;
 import com.playko.projectManagement.application.handler.IProjectHandler;
 import io.swagger.v3.oas.annotations.Operation;
@@ -10,9 +10,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,9 +20,6 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 
 @RestController
 @RequestMapping("/api/v1/project")

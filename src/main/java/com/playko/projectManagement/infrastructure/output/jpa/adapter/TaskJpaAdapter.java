@@ -174,6 +174,14 @@ public class TaskJpaAdapter implements ITaskPersistencePort {
         return diasTomados;
     }
 
+    @Override
+    public void deleteTask(Long taskId) {
+        taskRepository.findById(taskId)
+                .orElseThrow(TaskNotFoundException::new);
+
+        taskRepository.deleteById(taskId);
+    }
+
     @Scheduled(cron = "0 0 8 * * ?", zone = "America/New_York")
     public void sendTaskReminders() {
         ZonedDateTime now = ZonedDateTime.now(ZoneId.of("America/New_York"));

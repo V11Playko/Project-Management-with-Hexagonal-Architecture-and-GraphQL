@@ -1,7 +1,7 @@
 package com.playko.projectManagement.application.handler.impl;
 
-import com.playko.projectManagement.application.dto.request.ProjectDeadlineRequestDto;
-import com.playko.projectManagement.application.dto.request.ProjectRequestDto;
+import com.playko.projectManagement.application.dto.request.project.ProjectDeadlineRequestDto;
+import com.playko.projectManagement.application.dto.request.project.ProjectRequestDto;
 import com.playko.projectManagement.application.dto.response.ProjectStatsDto;
 import com.playko.projectManagement.application.handler.IProjectHandler;
 import com.playko.projectManagement.application.mapper.request.IProjectRequestMapper;
@@ -10,8 +10,6 @@ import com.playko.projectManagement.domain.model.ProjectModel;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-
-import java.time.LocalDate;
 
 @Service
 @RequiredArgsConstructor

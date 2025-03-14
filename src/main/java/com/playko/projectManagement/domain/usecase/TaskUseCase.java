@@ -55,4 +55,9 @@ public class TaskUseCase implements ITaskServicePort {
     public long calculateTaskDuration(Long taskId) {
         return taskPersistencePort.calculateTaskDuration(taskId);
     }
+
+    @Override
+    public void deleteTask(Long taskId) {
+        taskPersistencePort.deleteTask(taskId);
+    }
 }

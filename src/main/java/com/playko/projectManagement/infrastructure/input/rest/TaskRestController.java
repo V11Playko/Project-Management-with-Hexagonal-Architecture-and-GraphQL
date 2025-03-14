@@ -16,6 +16,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -91,7 +92,7 @@ public class TaskRestController {
     }
 
     @PreAuthorize("hasRole('CONTRIBUTOR')")
-    @PutMapping("/{taskId}/updateState")
+    @PutMapping("/updateState/{taskId}")
     public ResponseEntity<Void> updateTaskState(@PathVariable Long taskId, @RequestBody TaskStateUpdateRequestDto request) {
         taskHandler.updateTaskState(taskId, request.getNewState());
         return new ResponseEntity<>(HttpStatus.OK);
@@ -103,5 +104,17 @@ public class TaskRestController {
         long daysTaken = taskHandler.calculateTaskDuration(taskId);
         String message = "Días empleados para completar la tarea: " + daysTaken;
         return ResponseEntity.ok(message);
+    }
+
+    @Operation(summary = "Delete task")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "Task delete", content = @Content),
+            @ApiResponse(responseCode = "409", description = "Task already exists", content = @Content)
+    })
+    @DeleteMapping("/deleteTask/{id}")
+    @PreAuthorize("hasRole('MANAGER')")
+    public ResponseEntity<Void> deleteTask(@PathVariable Long id){
+        taskHandler.deleteTask(id);
+        return ResponseEntity.status(HttpStatus.OK).build();
     }
 }

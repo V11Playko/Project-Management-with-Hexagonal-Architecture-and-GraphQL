@@ -16,6 +16,7 @@ public interface ITaskServicePort {
     void updateTaskState(Long taskId, TaskState newState);
     List<TaskModel> getTasksByFilters(Long boardId, TaskState state, TaskPriority priority);
     long calculateTaskDuration(Long taskId);
+    void deleteTask(Long taskId);
 
 
 }

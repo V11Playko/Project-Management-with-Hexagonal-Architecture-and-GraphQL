@@ -1,4 +1,4 @@
-package com.playko.projectManagement.application.dto.request;
+package com.playko.projectManagement.application.dto.request.project;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;

@@ -66,4 +66,9 @@ public class TaskHandler implements ITaskHandler {
     public long calculateTaskDuration(Long taskId) {
         return taskServicePort.calculateTaskDuration(taskId);
     }
+
+    @Override
+    public void deleteTask(Long taskId) {
+        taskServicePort.deleteTask(taskId);
+    }
 }

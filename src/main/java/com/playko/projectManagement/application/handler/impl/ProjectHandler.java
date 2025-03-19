@@ -38,4 +38,14 @@ public class ProjectHandler implements IProjectHandler {
     public ProjectStatsDto getProjectStats(Long projectId) {
         return projectServicePort.getProjectStats(projectId);
     }
+
+    @Override
+    public void restrictUserFromProject(Long projectId, String email) {
+        projectServicePort.restrictUserFromProject(projectId, email);
+    }
+
+    @Override
+    public void removeUserRestriction(Long projectId, String email) {
+        projectServicePort.removeUserRestriction(projectId, email);
+    }
 }

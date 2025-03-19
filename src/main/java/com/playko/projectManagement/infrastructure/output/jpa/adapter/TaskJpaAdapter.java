@@ -6,19 +6,24 @@ import com.playko.projectManagement.domain.model.TaskModel;
 import com.playko.projectManagement.domain.spi.ITaskPersistencePort;
 import com.playko.projectManagement.infrastructure.configuration.security.userDetails.CustomUserDetails;
 import com.playko.projectManagement.infrastructure.exception.BoardColumnNotFoundException;
+import com.playko.projectManagement.infrastructure.exception.BoardNotFoundException;
 import com.playko.projectManagement.infrastructure.exception.InvalidTaskStateException;
 import com.playko.projectManagement.infrastructure.exception.ProjectNotFoundException;
 import com.playko.projectManagement.infrastructure.exception.TaskNotFoundException;
+import com.playko.projectManagement.infrastructure.exception.UnauthorizedException;
 import com.playko.projectManagement.infrastructure.exception.UserNotFoundException;
 import com.playko.projectManagement.infrastructure.output.jpa.entity.BoardColumnEntity;
+import com.playko.projectManagement.infrastructure.output.jpa.entity.BoardEntity;
 import com.playko.projectManagement.infrastructure.output.jpa.entity.ProjectEntity;
 import com.playko.projectManagement.infrastructure.output.jpa.entity.TaskEntity;
 import com.playko.projectManagement.infrastructure.output.jpa.entity.UserEntity;
 import com.playko.projectManagement.infrastructure.output.jpa.mapper.ITaskEntityMapper;
 import com.playko.projectManagement.infrastructure.output.jpa.repository.IBoardColumnRepository;
+import com.playko.projectManagement.infrastructure.output.jpa.repository.IBoardRepository;
 import com.playko.projectManagement.infrastructure.output.jpa.repository.IProjectRepository;
 import com.playko.projectManagement.infrastructure.output.jpa.repository.ITaskRepository;
 import com.playko.projectManagement.infrastructure.output.jpa.repository.IUserRepository;
+import com.playko.projectManagement.shared.SecurityUtils;
 import com.playko.projectManagement.shared.constants.Exceptions;
 import com.playko.projectManagement.shared.enums.TaskPriority;
 import com.playko.projectManagement.shared.enums.TaskState;
@@ -44,15 +49,30 @@ public class TaskJpaAdapter implements ITaskPersistencePort {
     private final IUserRepository userRepository;
     private final ITaskEntityMapper taskEntityMapper;
     private final IEmailHandler emailHandler;
+    private final SecurityUtils securityUtils;
+    private final IBoardRepository boardRepository;
 
     @Override
     public List<TaskModel> getTasksByUserEmail() {
-          String correoDelToken = obtenerCorreoDelToken();
-          UserEntity userEntity = userRepository.findByEmail(correoDelToken)
-                  .orElseThrow(UserNotFoundException::new);
+        String correoDelToken = securityUtils.obtenerCorreoDelToken();
 
-          List<TaskEntity> taskEntities = taskRepository.findByAssignedUser(userEntity);
-          return taskEntityMapper.toDtoList(taskEntities);
+        UserEntity userEntity = userRepository.findByEmail(correoDelToken)
+                .orElseThrow(UserNotFoundException::new);
+
+        List<TaskEntity> taskEntities = taskRepository.findByAssignedUser(userEntity);
+
+        List<TaskEntity> tareasPermitidas = taskEntities.stream()
+                .filter(task -> {
+                    try {
+                        securityUtils.validarAccesoProyecto(task.getProject().getId(), correoDelToken);
+                        return true;
+                    } catch (UnauthorizedException e) {
+                        return false;
+                    }
+                })
+                .toList();
+
+        return taskEntityMapper.toDtoList(tareasPermitidas);
     }
 
     @Override
@@ -63,6 +83,10 @@ public class TaskJpaAdapter implements ITaskPersistencePort {
                 .orElseThrow(BoardColumnNotFoundException::new);
         UserEntity user = userRepository.findById(taskModel.getAssignedUserId().getId())
                 .orElseThrow(UserNotFoundException::new);
+
+        String correoAutenticado = securityUtils.obtenerCorreoDelToken();
+        securityUtils.validarAccesoProyecto(project.getId(), correoAutenticado);
+
 
         TaskEntity taskEntity = taskEntityMapper.toEntity(taskModel);
         taskEntity.setProject(project);
@@ -78,6 +102,10 @@ public class TaskJpaAdapter implements ITaskPersistencePort {
                 .orElseThrow(TaskNotFoundException::new);
         UserEntity userEntity = userRepository.findById(userId)
                 .orElseThrow(UserNotFoundException::new);
+
+        String correoAutenticado = securityUtils.obtenerCorreoDelToken();
+        securityUtils.validarAccesoProyecto(taskEntity.getProject().getId(), correoAutenticado);
+
 
         EmailRequestDto emailRequestDto = new EmailRequestDto();
         emailRequestDto.setDestinatario(userEntity.getEmail());
@@ -100,6 +128,10 @@ public class TaskJpaAdapter implements ITaskPersistencePort {
         UserEntity newUser = userRepository.findById(newUserId)
                 .orElseThrow(UserNotFoundException::new);
 
+        String correoAutenticado = securityUtils.obtenerCorreoDelToken();
+        securityUtils.validarAccesoProyecto(task.getProject().getId(), correoAutenticado);
+
+
         task.setAssignedUser(newUser);
         taskRepository.save(task);
 
@@ -115,6 +147,10 @@ public class TaskJpaAdapter implements ITaskPersistencePort {
     public void updateTaskDeadline(Long taskId, LocalDate deadline) {
         TaskEntity taskEntity = taskRepository.findById(taskId)
                 .orElseThrow(TaskNotFoundException::new);
+
+        String correoAutenticado = securityUtils.obtenerCorreoDelToken();
+        securityUtils.validarAccesoProyecto(taskEntity.getProject().getId(), correoAutenticado);
+
         taskEntity.setLimitDate(deadline);
         taskRepository.save(taskEntity);
 
@@ -130,6 +166,10 @@ public class TaskJpaAdapter implements ITaskPersistencePort {
     public void updateTaskState(Long taskId, TaskState newState) {
         TaskEntity taskEntity = taskRepository.findById(taskId)
                 .orElseThrow(TaskNotFoundException::new);
+
+        String correoAutenticado = securityUtils.obtenerCorreoDelToken();
+        securityUtils.validarAccesoProyecto(taskEntity.getProject().getId(), correoAutenticado);
+
         taskEntity.setState(newState);
         taskRepository.save(taskEntity);
 
@@ -143,6 +183,13 @@ public class TaskJpaAdapter implements ITaskPersistencePort {
 
     @Override
     public List<TaskModel> getTasksByFilters(Long boardId, TaskState state, TaskPriority priority) {
+        String correoDelToken = securityUtils.obtenerCorreoDelToken();
+
+        BoardEntity board = boardRepository.findById(boardId)
+                .orElseThrow(BoardNotFoundException::new);
+
+        securityUtils.validarAccesoProyecto(board.getProject().getId(), correoDelToken);
+
         List<TaskEntity> taskEntities;
 
         if (state != null && priority != null) {
@@ -152,7 +199,7 @@ public class TaskJpaAdapter implements ITaskPersistencePort {
         } else if (priority != null) {
             taskEntities = taskRepository.findByBoardColumn_Board_IdAndPriority(boardId, priority);
         } else {
-            taskEntities = taskRepository.findByBoardColumn_Board_IdAndState(boardId, TaskState.PENDING); // Default filter
+            taskEntities = taskRepository.findByBoardColumn_Board_IdAndState(boardId, TaskState.PENDING);
         }
 
         return taskEntities.stream()
@@ -165,6 +212,10 @@ public class TaskJpaAdapter implements ITaskPersistencePort {
         TaskEntity task = taskRepository.findById(taskId)
                 .orElseThrow(TaskNotFoundException::new);
 
+        String correoAutenticado = securityUtils.obtenerCorreoDelToken();
+        securityUtils.validarAccesoProyecto(task.getProject().getId(), correoAutenticado);
+
+
         if (!task.getState().equals(TaskState.DONE)) {
             throw new InvalidTaskStateException();
         }
@@ -176,8 +227,11 @@ public class TaskJpaAdapter implements ITaskPersistencePort {
 
     @Override
     public void deleteTask(Long taskId) {
-        taskRepository.findById(taskId)
+        TaskEntity task = taskRepository.findById(taskId)
                 .orElseThrow(TaskNotFoundException::new);
+
+        String correoAutenticado = securityUtils.obtenerCorreoDelToken();
+        securityUtils.validarAccesoProyecto(task.getProject().getId(), correoAutenticado);
 
         taskRepository.deleteById(taskId);
     }

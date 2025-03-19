@@ -27,7 +27,7 @@ public class Exceptions {
     /**
      * Mensajes de excepciones
      */
-    public static final String UNAUTHORIZED_MESSAGE = "No tienes permiso para acceder a este recurso.";
+    public static final String UNAUTHORIZED_MESSAGE = "No tienes permiso para acceder a este recurso";
     public static final String USER_ALREADY_EXISTS_MESSAGE = "Este correo ya esta en uso.";
     public static final String USER_NOT_FOUND_MESSAGE = "Usuario no encontrado.";
     public static final String USERS_NOT_FOUND_MESSAGE= "Usuarios no encontrados.";
@@ -42,5 +42,7 @@ public class Exceptions {
     public static final String EMAIL_NOT_SEND_MESSAGE= "El correo no se envio correctamente..";
     public static final String BOARD_NOT_FOUND_MESSAGE = "Esta tabla Kanban no existe.";
     public static final String INVALID_TASK_STATE_MESSAGE = "La tarea aún no ha sido completada.";
+    public static final String USER_ALREADY_RESTRICTED_MESSAGE = "El usuario ya esta restringido.";
+    public static final String USER_NOT_RESTRICTED_MESSAGE = "El usuario indicado no esta restringido.";
 
 }

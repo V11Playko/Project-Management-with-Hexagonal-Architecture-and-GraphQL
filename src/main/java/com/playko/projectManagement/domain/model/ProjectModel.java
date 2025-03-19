@@ -19,8 +19,9 @@ public class ProjectModel {
     private String owner;
     private List<BoardModel> boards;
     private List<TaskModel> tasks;
+    private List<String> restrictedUsers;
 
-    public ProjectModel(Long id, String name, String description, LocalDate creationDate, LocalDate finishedDate, ProjectState state, String owner, List<BoardModel> boards, List<TaskModel> tasks) {
+    public ProjectModel(Long id, String name, String description, LocalDate creationDate, LocalDate finishedDate, ProjectState state, String owner, List<BoardModel> boards, List<TaskModel> tasks, List<String> restrictedUsers) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -30,6 +31,7 @@ public class ProjectModel {
         this.owner = owner;
         this.boards = boards;
         this.tasks = tasks;
+        this.restrictedUsers = restrictedUsers;
     }
 
     public Long getId() {
@@ -102,6 +104,14 @@ public class ProjectModel {
 
     public void setTasks(List<TaskModel> tasks) {
         this.tasks = tasks;
+    }
+
+    public List<String> getRestrictedUsers() {
+        return restrictedUsers;
+    }
+
+    public void setRestrictedUsers(List<String> restrictedUsers) {
+        this.restrictedUsers = restrictedUsers;
     }
 
     public double getCompletionPercentage() {

@@ -66,6 +66,7 @@ import com.playko.projectManagement.infrastructure.output.jpa.repository.ISubTas
 import com.playko.projectManagement.infrastructure.output.jpa.repository.ITaskRepository;
 import com.playko.projectManagement.infrastructure.output.jpa.repository.ITeamRepository;
 import com.playko.projectManagement.infrastructure.output.jpa.repository.IUserRepository;
+import com.playko.projectManagement.shared.SecurityUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -119,8 +120,9 @@ public class BeanConfiguration {
     @Bean
     public ITaskPersistencePort taskPersistencePort(ITaskRepository taskRepository, IProjectRepository projectRepository,
                                                     IBoardColumnRepository boardColumnRepository, IUserRepository userRepository,
-                                                    ITaskEntityMapper taskEntityMapper, IEmailHandler emailHandler) {
-        return new TaskJpaAdapter(taskRepository, projectRepository, boardColumnRepository, userRepository, taskEntityMapper, emailHandler);
+                                                    ITaskEntityMapper taskEntityMapper, IEmailHandler emailHandler,
+                                                    SecurityUtils securityUtils, IBoardRepository boardRepository) {
+        return new TaskJpaAdapter(taskRepository, projectRepository, boardColumnRepository, userRepository, taskEntityMapper, emailHandler, securityUtils, boardRepository);
     }
 
     @Bean
@@ -130,8 +132,9 @@ public class BeanConfiguration {
 
     @Bean
     public ISubTaskPersistencePort subTaskPersistencePort(ISubTaskRepository subTaskRepository, ITaskRepository taskRepository,
-                                                          ISubTaskEntityMapper subTaskEntityMapper, IEmailHandler emailHandler) {
-        return new SubTaskJpaAdapter(subTaskRepository, taskRepository, subTaskEntityMapper, emailHandler);
+                                                          ISubTaskEntityMapper subTaskEntityMapper, IEmailHandler emailHandler,
+                                                          SecurityUtils securityUtils) {
+        return new SubTaskJpaAdapter(subTaskRepository, taskRepository, subTaskEntityMapper, emailHandler, securityUtils);
     }
 
     @Bean
@@ -141,8 +144,9 @@ public class BeanConfiguration {
 
     @Bean
     public IProjectPersistencePort projectPersistencePort(IProjectRepository projectRepository, IProjectEntityMapper projectEntityMapper,
-                                                          IUserRepository userRepository, IRoleRepository roleRepository, IEmailHandler emailHandler) {
-        return new ProjectJpaAdapter(projectRepository, projectEntityMapper, userRepository, roleRepository, emailHandler);
+                                                          IUserRepository userRepository, IRoleRepository roleRepository, IEmailHandler emailHandler,
+                                                          SecurityUtils securityUtils) {
+        return new ProjectJpaAdapter(projectRepository, projectEntityMapper, userRepository, roleRepository, emailHandler, securityUtils);
     }
 
     @Bean

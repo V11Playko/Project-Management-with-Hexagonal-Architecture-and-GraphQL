@@ -11,6 +11,7 @@ import com.playko.projectManagement.infrastructure.output.jpa.entity.TaskEntity;
 import com.playko.projectManagement.infrastructure.output.jpa.mapper.ISubTaskEntityMapper;
 import com.playko.projectManagement.infrastructure.output.jpa.repository.ISubTaskRepository;
 import com.playko.projectManagement.infrastructure.output.jpa.repository.ITaskRepository;
+import com.playko.projectManagement.shared.SecurityUtils;
 import com.playko.projectManagement.shared.enums.SubTaskState;
 import lombok.RequiredArgsConstructor;
 
@@ -22,10 +23,15 @@ public class SubTaskJpaAdapter implements ISubTaskPersistencePort {
     private final ITaskRepository taskRepository;
     private final ISubTaskEntityMapper subTaskEntityMapper;
     private final IEmailHandler emailHandler;
+    private final SecurityUtils securityUtils;
+
     @Override
     public void addSubTask(Long taskId, SubTaskModel subTaskModel) {
         TaskEntity taskEntity = taskRepository.findById(taskId)
                 .orElseThrow(TaskNotFoundException::new);
+
+        String correoAutenticado = securityUtils.obtenerCorreoDelToken();
+        securityUtils.validarAccesoProyecto(taskEntity.getProject().getId(), correoAutenticado);
 
         SubTaskEntity subTaskEntity = subTaskEntityMapper.toEntity(subTaskModel);
         subTaskEntity.setTask(taskEntity);
@@ -35,6 +41,13 @@ public class SubTaskJpaAdapter implements ISubTaskPersistencePort {
 
     @Override
     public List<SubTaskModel> getSubTasksByTask(Long taskId) {
+        String correoDelToken = securityUtils.obtenerCorreoDelToken();
+
+        TaskEntity task = taskRepository.findById(taskId)
+                .orElseThrow(TaskNotFoundException::new);
+
+        securityUtils.validarAccesoProyecto(task.getProject().getId(), correoDelToken);
+
         return subTaskEntityMapper.toModelList(subTaskRepository.findByTaskId(taskId));
     }
 
@@ -42,6 +55,10 @@ public class SubTaskJpaAdapter implements ISubTaskPersistencePort {
     public void updateSubTask(Long subTaskId, SubTaskModel subTaskModel) {
         SubTaskEntity subTaskEntity = subTaskRepository.findById(subTaskId)
                 .orElseThrow(SubTaskNotFoundException::new);
+
+        String correoAutenticado = securityUtils.obtenerCorreoDelToken();
+        securityUtils.validarAccesoProyecto(subTaskEntity.getTask().getProject().getId(), correoAutenticado);
+
 
         subTaskEntity.setTitle(subTaskModel.getTitle());
         subTaskEntity.setDescription(subTaskModel.getDescription());
@@ -60,9 +77,12 @@ public class SubTaskJpaAdapter implements ISubTaskPersistencePort {
 
     @Override
     public void deleteSubTask(Long subTaskId) {
-        if (!subTaskRepository.existsById(subTaskId)) {
-            throw new SubTaskNotFoundException();
-        }
+        SubTaskEntity subTaskEntity = subTaskRepository.findById(subTaskId)
+                        .orElseThrow(SubTaskNotFoundException::new);
+
+        String correoAutenticado = securityUtils.obtenerCorreoDelToken();
+        securityUtils.validarAccesoProyecto(subTaskEntity.getTask().getProject().getId(), correoAutenticado);
+
         subTaskRepository.deleteById(subTaskId);
     }
 }

@@ -12,6 +12,7 @@ import com.playko.projectManagement.infrastructure.output.jpa.entity.UserEntity;
 import com.playko.projectManagement.infrastructure.output.jpa.mapper.IUserEntityMapper;
 import com.playko.projectManagement.infrastructure.output.jpa.repository.IRoleRepository;
 import com.playko.projectManagement.infrastructure.output.jpa.repository.IUserRepository;
+import com.playko.projectManagement.shared.SecurityUtils;
 import com.playko.projectManagement.shared.enums.RoleEnum;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
@@ -24,6 +25,7 @@ public class UserJpaAdapter implements IUserPersistencePort {
     private final IUserRepository userRepository;
     private final IUserEntityMapper userEntityMapper;
     private final IRoleRepository roleRepository;
+    private final SecurityUtils securityUtils;
 
     @Override
     public UserModel findByEmail(String email) {
@@ -63,7 +65,7 @@ public class UserJpaAdapter implements IUserPersistencePort {
 
     @Override
     public void deleteUser(Long id) {
-        String correoAutenticado = obtenerCorreoDelToken();
+        String correoAutenticado = securityUtils.obtenerCorreoDelToken();
 
         UserEntity authenticatedUser = userRepository.findByEmail(correoAutenticado).orElseThrow(UserNotFoundException::new);
 
@@ -76,14 +78,5 @@ public class UserJpaAdapter implements IUserPersistencePort {
         }
 
         throw new UnauthorizedException();
-    }
-
-    public String obtenerCorreoDelToken() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (authentication != null && authentication.getPrincipal() instanceof CustomUserDetails) {
-            CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
-            return userDetails.getUsername();
-        }
-        throw new RuntimeException("Error obteniendo el correo del token.");
     }
 }

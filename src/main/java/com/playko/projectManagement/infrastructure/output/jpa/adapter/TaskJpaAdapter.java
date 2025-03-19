@@ -253,15 +253,4 @@ public class TaskJpaAdapter implements ITaskPersistencePort {
                     emailHandler.sendEmail(emailRequestDto);
                 });
     }
-
-
-
-    public String obtenerCorreoDelToken() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (authentication != null && authentication.getPrincipal() instanceof CustomUserDetails) {
-            CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
-            return userDetails.getUsername();
-        }
-        throw new RuntimeException("Error obteniendo el correo del token.");
-    }
 }

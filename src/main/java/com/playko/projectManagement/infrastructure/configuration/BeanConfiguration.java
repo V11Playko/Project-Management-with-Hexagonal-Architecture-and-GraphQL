@@ -88,8 +88,9 @@ public class BeanConfiguration {
     }
 
     @Bean
-    public IUserPersistencePort userPersistencePort(IUserRepository userRepository, IUserEntityMapper userEntityMapper, IRoleRepository roleRepository) {
-        return new UserJpaAdapter(userRepository, userEntityMapper, roleRepository);
+    public IUserPersistencePort userPersistencePort(IUserRepository userRepository, IUserEntityMapper userEntityMapper, IRoleRepository roleRepository,
+                                                    SecurityUtils securityUtils) {
+        return new UserJpaAdapter(userRepository, userEntityMapper, roleRepository, securityUtils);
     }
 
     @Bean

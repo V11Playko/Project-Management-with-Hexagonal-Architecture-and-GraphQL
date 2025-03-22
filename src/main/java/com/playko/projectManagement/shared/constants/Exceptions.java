@@ -44,5 +44,6 @@ public class Exceptions {
     public static final String INVALID_TASK_STATE_MESSAGE = "La tarea aún no ha sido completada.";
     public static final String USER_ALREADY_RESTRICTED_MESSAGE = "El usuario ya esta restringido.";
     public static final String USER_NOT_RESTRICTED_MESSAGE = "El usuario indicado no esta restringido.";
+    public static final String PROJECTS_NOT_FOUND_MESSAGE = "No hay proyectos asignados para enviar el resumen.";
 
 }

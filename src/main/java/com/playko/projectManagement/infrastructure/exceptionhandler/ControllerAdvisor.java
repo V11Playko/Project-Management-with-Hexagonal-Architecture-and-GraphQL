@@ -8,6 +8,8 @@ import com.playko.projectManagement.infrastructure.exception.MessageNotSendExcep
 import com.playko.projectManagement.infrastructure.exception.NoUsersFoundException;
 import com.playko.projectManagement.infrastructure.exception.ProjectAlreadyExistsException;
 import com.playko.projectManagement.infrastructure.exception.ProjectNotFoundException;
+import com.playko.projectManagement.infrastructure.exception.ProjectsNotFoundException;
+import com.playko.projectManagement.infrastructure.exception.StatsNotFoundException;
 import com.playko.projectManagement.infrastructure.exception.SubTaskNotFoundException;
 import com.playko.projectManagement.infrastructure.exception.TaskNotFoundException;
 import com.playko.projectManagement.infrastructure.exception.TeamNotFoundException;
@@ -37,6 +39,7 @@ import static com.playko.projectManagement.shared.constants.Exceptions.BOARD_NOT
 import static com.playko.projectManagement.shared.constants.Exceptions.EMAIL_NOT_SEND_MESSAGE;
 import static com.playko.projectManagement.shared.constants.Exceptions.INVALID_PROJECT_STATE_MESSAGE;
 import static com.playko.projectManagement.shared.constants.Exceptions.INVALID_TASK_STATE_MESSAGE;
+import static com.playko.projectManagement.shared.constants.Exceptions.PROJECTS_NOT_FOUND_MESSAGE;
 import static com.playko.projectManagement.shared.constants.Exceptions.PROJECT_ALREADY_EXISTS_MESSAGE;
 import static com.playko.projectManagement.shared.constants.Exceptions.PROJECT_NOT_FOUND_MESSAGE;
 import static com.playko.projectManagement.shared.constants.Exceptions.RESPONSE_MESSAGE_KEY;
@@ -197,5 +200,17 @@ public class ControllerAdvisor {
             UserNotRestrictedException userNotRestrictedException) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .body(Collections.singletonMap(RESPONSE_MESSAGE_KEY, USER_NOT_RESTRICTED_MESSAGE));
+    }
+    @ExceptionHandler(ProjectsNotFoundException.class)
+    public ResponseEntity<Map<String, String>> projectsNotFoundException(
+            ProjectsNotFoundException projectsNotFoundException) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .body(Collections.singletonMap(RESPONSE_MESSAGE_KEY, PROJECTS_NOT_FOUND_MESSAGE));
+    }
+    @ExceptionHandler(StatsNotFoundException.class)
+    public ResponseEntity<Map<String, String>> statsNotFoundException(
+            StatsNotFoundException statsNotFoundException) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .body(Collections.singletonMap(RESPONSE_MESSAGE_KEY, statsNotFoundException.getMessage()));
     }
 }

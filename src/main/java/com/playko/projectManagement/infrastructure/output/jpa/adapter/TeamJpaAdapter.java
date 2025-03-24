@@ -2,7 +2,6 @@ package com.playko.projectManagement.infrastructure.output.jpa.adapter;
 
 import com.playko.projectManagement.application.dto.request.EmailRequestDto;
 import com.playko.projectManagement.application.handler.IEmailHandler;
-import com.playko.projectManagement.application.mapper.request.ITeamRequestMapper;
 import com.playko.projectManagement.domain.model.TeamModel;
 import com.playko.projectManagement.domain.spi.ITeamPersistencePort;
 import com.playko.projectManagement.infrastructure.exception.TeamNotFoundException;
@@ -16,7 +15,6 @@ import com.playko.projectManagement.infrastructure.output.jpa.repository.IUserRe
 import lombok.RequiredArgsConstructor;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 @RequiredArgsConstructor

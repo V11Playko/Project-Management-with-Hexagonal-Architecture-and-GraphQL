@@ -4,7 +4,6 @@ import com.playko.projectManagement.application.dto.request.EmailRequestDto;
 import com.playko.projectManagement.application.handler.IEmailHandler;
 import com.playko.projectManagement.domain.model.TaskModel;
 import com.playko.projectManagement.domain.spi.ITaskPersistencePort;
-import com.playko.projectManagement.infrastructure.configuration.security.userDetails.CustomUserDetails;
 import com.playko.projectManagement.infrastructure.exception.BoardColumnNotFoundException;
 import com.playko.projectManagement.infrastructure.exception.BoardNotFoundException;
 import com.playko.projectManagement.infrastructure.exception.InvalidTaskStateException;
@@ -29,9 +28,6 @@ import com.playko.projectManagement.shared.enums.TaskPriority;
 import com.playko.projectManagement.shared.enums.TaskState;
 import lombok.RequiredArgsConstructor;
 import org.springframework.scheduling.annotation.Scheduled;
-import org.springframework.scheduling.config.Task;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;

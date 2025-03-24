@@ -3,7 +3,6 @@ package com.playko.projectManagement.infrastructure.output.jpa.mapper;
 import com.playko.projectManagement.domain.model.UserModel;
 import com.playko.projectManagement.infrastructure.output.jpa.entity.UserEntity;
 import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
 import org.mapstruct.ReportingPolicy;
 
 import java.util.List;

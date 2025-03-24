@@ -5,7 +5,6 @@ import com.playko.projectManagement.application.dto.request.BoardRequestDto;
 import com.playko.projectManagement.application.dto.response.BoardResponseDto;
 import com.playko.projectManagement.application.handler.IBoardHandler;
 import com.playko.projectManagement.application.mapper.response.IBoardResponseMapper;
-import com.playko.projectManagement.domain.model.BoardModel;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;

@@ -2,7 +2,6 @@ package com.playko.projectManagement.infrastructure.output.jpa.adapter;
 
 import com.playko.projectManagement.domain.model.UserModel;
 import com.playko.projectManagement.domain.spi.IUserPersistencePort;
-import com.playko.projectManagement.infrastructure.configuration.security.userDetails.CustomUserDetails;
 import com.playko.projectManagement.infrastructure.exception.NoUsersFoundException;
 import com.playko.projectManagement.infrastructure.exception.UnauthorizedException;
 import com.playko.projectManagement.infrastructure.exception.UserAlreadyExistsException;
@@ -15,8 +14,6 @@ import com.playko.projectManagement.infrastructure.output.jpa.repository.IUserRe
 import com.playko.projectManagement.shared.SecurityUtils;
 import com.playko.projectManagement.shared.enums.RoleEnum;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 
 import java.util.List;
 

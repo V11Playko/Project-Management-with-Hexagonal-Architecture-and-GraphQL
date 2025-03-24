@@ -1,6 +1,5 @@
 package com.playko.projectManagement.infrastructure.output.jpa.mapper;
 
-import com.playko.projectManagement.application.dto.request.task.TaskRequestDto;
 import com.playko.projectManagement.domain.model.TaskModel;
 import com.playko.projectManagement.infrastructure.output.jpa.entity.TaskEntity;
 import org.mapstruct.Mapper;

@@ -13,11 +13,8 @@ import org.mapstruct.Mapping;
 
 import java.util.List;
 
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
 import org.mapstruct.Named;
 import org.mapstruct.factory.Mappers;
-import java.util.List;
 
 @Mapper(componentModel = "spring", uses = { IUserEntityMapper.class, ITaskEntityMapper.class })
 public interface ICommentEntityMapper {

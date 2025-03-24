@@ -1,10 +1,7 @@
 package com.playko.projectManagement.application.handler.impl;
 
 import com.playko.projectManagement.application.dto.request.BoardColumnRequestDto;
-import com.playko.projectManagement.application.dto.request.BoardRequestDto;
-import com.playko.projectManagement.application.dto.response.BoardResponseDto;
 import com.playko.projectManagement.application.handler.IBoardColumnHandler;
-import com.playko.projectManagement.application.handler.IBoardHandler;
 import com.playko.projectManagement.application.mapper.request.IBoardColumnRequestMapper;
 import com.playko.projectManagement.domain.api.IBoardColumnServicePort;
 import jakarta.transaction.Transactional;

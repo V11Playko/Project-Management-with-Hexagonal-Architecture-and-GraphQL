@@ -18,7 +18,6 @@ import com.playko.projectManagement.infrastructure.output.jpa.repository.IProjec
 import com.playko.projectManagement.infrastructure.output.jpa.repository.IRoleRepository;
 import com.playko.projectManagement.infrastructure.output.jpa.repository.IUserRepository;
 import com.playko.projectManagement.shared.SecurityUtils;
-import com.playko.projectManagement.shared.constants.Exceptions;
 import com.playko.projectManagement.shared.constants.RolesId;
 import com.playko.projectManagement.shared.enums.ProjectState;
 import com.playko.projectManagement.shared.enums.RoleEnum;

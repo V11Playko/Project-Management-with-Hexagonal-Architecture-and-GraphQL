@@ -3,7 +3,6 @@ package com.playko.projectManagement.infrastructure.input.rest;
 import com.playko.projectManagement.application.dto.request.LoginRequestDto;
 import com.playko.projectManagement.application.dto.response.JwtTokenResponseDto;
 import com.playko.projectManagement.application.handler.IAuthHandler;
-import com.playko.projectManagement.application.handler.impl.AuthHandler;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;

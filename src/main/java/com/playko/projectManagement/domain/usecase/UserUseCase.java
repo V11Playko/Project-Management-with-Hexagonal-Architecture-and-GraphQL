@@ -1,12 +1,10 @@
 package com.playko.projectManagement.domain.usecase;
 
 import com.playko.projectManagement.domain.api.IUserServicePort;
-import com.playko.projectManagement.domain.model.RoleModel;
 import com.playko.projectManagement.domain.model.UserModel;
 import com.playko.projectManagement.domain.spi.IAuthPasswordEncoderPort;
 import com.playko.projectManagement.domain.spi.IRolePersistencePort;
 import com.playko.projectManagement.domain.spi.IUserPersistencePort;
-import com.playko.projectManagement.shared.constants.RolesId;
 
 import java.util.List;
 

@@ -2,7 +2,6 @@ package com.playko.projectManagement.application.dto.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.Setter;
 
 @Getter
 @AllArgsConstructor

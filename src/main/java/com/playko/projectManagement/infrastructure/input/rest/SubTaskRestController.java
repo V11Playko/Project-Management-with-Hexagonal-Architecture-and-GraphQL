@@ -3,6 +3,9 @@ package com.playko.projectManagement.infrastructure.input.rest;
 import com.playko.projectManagement.application.dto.request.SubTaskRequestDto;
 import com.playko.projectManagement.application.dto.response.SubTaskResponseDto;
 import com.playko.projectManagement.application.handler.ISubTaskHandler;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,6 +27,12 @@ import java.util.List;
 public class SubTaskRestController {
     private final ISubTaskHandler subTaskHandler;
 
+    @Operation(summary = "Add a subtask to a task")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "Subtask added successfully"),
+            @ApiResponse(responseCode = "404", description = "Task not found"),
+            @ApiResponse(responseCode = "400", description = "Invalid request data")
+    })
     @PreAuthorize("hasRole('MANAGER')")
     @PostMapping("/add/{taskId}")
     public ResponseEntity<Void> addSubTask(@PathVariable Long taskId, @RequestBody SubTaskRequestDto request) {
@@ -31,11 +40,23 @@ public class SubTaskRestController {
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
+    @Operation(summary = "Get all subtasks for a specific task")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "List of subtasks retrieved successfully"),
+            @ApiResponse(responseCode = "404", description = "Task not found")
+    })
+    @PreAuthorize("hasAnyRole('MANAGER', 'CONTRIBUTOR', 'USER')")
     @GetMapping("/{taskId}")
     public ResponseEntity<List<SubTaskResponseDto>> getSubTasksByTask(@PathVariable Long taskId) {
         return ResponseEntity.ok(subTaskHandler.getSubTasksByTask(taskId));
     }
 
+    @Operation(summary = "Update a subtask")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Subtask updated successfully"),
+            @ApiResponse(responseCode = "404", description = "Subtask not found"),
+            @ApiResponse(responseCode = "400", description = "Invalid request data")
+    })
     @PreAuthorize("hasRole('MANAGER')")
     @PutMapping("/update/{subTaskId}")
     public ResponseEntity<Void> updateSubTask(@PathVariable Long subTaskId, @RequestBody SubTaskRequestDto request) {
@@ -43,6 +64,11 @@ public class SubTaskRestController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
+    @Operation(summary = "Delete a subtask")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "204", description = "Subtask deleted successfully"),
+            @ApiResponse(responseCode = "404", description = "Subtask not found")
+    })
     @PreAuthorize("hasRole('MANAGER')")
     @DeleteMapping("/delete/{subTaskId}")
     public ResponseEntity<Void> deleteSubTask(@PathVariable Long subTaskId) {

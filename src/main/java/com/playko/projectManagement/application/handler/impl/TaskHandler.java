@@ -71,4 +71,9 @@ public class TaskHandler implements ITaskHandler {
     public void deleteTask(Long taskId) {
         taskServicePort.deleteTask(taskId);
     }
+
+    @Override
+    public List<TaskResponseDto> searchTasksByKeyword(String keyword) {
+        return taskRequestMapper.toDtoList(taskServicePort.searchTasksByKeyword(keyword));
+    }
 }

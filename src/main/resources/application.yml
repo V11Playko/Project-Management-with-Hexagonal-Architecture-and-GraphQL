@@ -1,3 +1,13 @@
 spring:
+  cloud:
+    compatibility-verifier:
+      enabled: false
+    config:
+      uri: http://config-server-url:8888 # URL de tu Config Server
   profiles:
     active: dev
+  thymeleaf:
+    enabled: true
+    prefix: classpath:/templates/
+    suffix: .html
+    cache: false

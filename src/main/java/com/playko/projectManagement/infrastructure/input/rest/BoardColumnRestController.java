@@ -2,6 +2,9 @@ package com.playko.projectManagement.infrastructure.input.rest;
 
 import com.playko.projectManagement.application.dto.request.BoardColumnRequestDto;
 import com.playko.projectManagement.application.handler.IBoardColumnHandler;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,6 +22,13 @@ public class BoardColumnRestController {
 
     private final IBoardColumnHandler boardColumnHandler;
 
+    @Operation(summary = "Add a new column to a board")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "Column added successfully"),
+            @ApiResponse(responseCode = "400", description = "Invalid request data"),
+            @ApiResponse(responseCode = "403", description = "User not authorized"),
+            @ApiResponse(responseCode = "404", description = "Board not found")
+    })
     @PreAuthorize("hasRole('MANAGER')")
     @PostMapping("/add/{boardId}")
     public ResponseEntity<Void> addColumnToBoard(@PathVariable Long boardId,
@@ -26,4 +36,5 @@ public class BoardColumnRestController {
         boardColumnHandler.addColumnToBoard(boardId, columnDto);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
+
 }

@@ -1,6 +1,10 @@
 package com.playko.projectManagement.infrastructure.input.rest;
 
 import com.playko.projectManagement.application.handler.IPdfHandler;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpHeaders;
@@ -22,6 +26,13 @@ import java.io.IOException;
 public class PdfRestController {
     private final IPdfHandler pdfHandler;
 
+    @Operation(summary = "Export project report as PDF")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "PDF report generated successfully",
+                    content = @Content(mediaType = "application/pdf")),
+            @ApiResponse(responseCode = "404", description = "Project not found"),
+            @ApiResponse(responseCode = "500", description = "Error generating PDF report")
+    })
     @PreAuthorize("hasAnyRole('MANAGER', 'OBSERVER', 'USER')")
     @GetMapping("/export/{projectId}")
     public ResponseEntity<InputStreamResource> exportProjectReport(@PathVariable Long projectId) throws IOException {
@@ -31,7 +42,7 @@ public class PdfRestController {
 
         ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(byteArrayOutputStream.toByteArray());
         HttpHeaders headers = new HttpHeaders();
-        headers.add("Content-Disposition", "attachment; filename="+ fileName +".pdf");
+        headers.add("Content-Disposition", "attachment; filename=" + fileName + ".pdf");
 
         return ResponseEntity
                 .ok()

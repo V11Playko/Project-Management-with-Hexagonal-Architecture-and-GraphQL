@@ -6,6 +6,7 @@ import com.playko.projectManagement.domain.model.TaskModel;
 import com.playko.projectManagement.domain.spi.ITaskPersistencePort;
 import com.playko.projectManagement.infrastructure.exception.BoardColumnNotFoundException;
 import com.playko.projectManagement.infrastructure.exception.BoardNotFoundException;
+import com.playko.projectManagement.infrastructure.exception.InvalidKeywordException;
 import com.playko.projectManagement.infrastructure.exception.InvalidTaskStateException;
 import com.playko.projectManagement.infrastructure.exception.ProjectNotFoundException;
 import com.playko.projectManagement.infrastructure.exception.TaskNotFoundException;
@@ -230,6 +231,16 @@ public class TaskJpaAdapter implements ITaskPersistencePort {
         securityUtils.validarAccesoProyecto(task.getProject().getId(), correoAutenticado);
 
         taskRepository.deleteById(taskId);
+    }
+
+    @Override
+    public List<TaskModel> searchTasksByKeyword(String keyword) {
+        if (keyword == null || keyword.trim().isEmpty()) {
+            throw new InvalidKeywordException();
+        }
+
+        List<TaskEntity> taskEntities = taskRepository.findByKeyword(keyword);
+        return taskEntityMapper.toDtoList(taskEntities);
     }
 
     @Scheduled(cron = "0 0 8 * * ?", zone = "America/New_York")

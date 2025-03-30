@@ -91,6 +91,12 @@ public class TaskRestController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
+    @Operation(summary = "Update task state")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Task state updated"),
+            @ApiResponse(responseCode = "404", description = "Task not found"),
+            @ApiResponse(responseCode = "403", description = "User not authorized")
+    })
     @PreAuthorize("hasRole('CONTRIBUTOR')")
     @PutMapping("/updateState/{taskId}")
     public ResponseEntity<Void> updateTaskState(@PathVariable Long taskId, @RequestBody TaskStateUpdateRequestDto request) {
@@ -98,6 +104,12 @@ public class TaskRestController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
+    @Operation(summary = "Get task duration")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Task duration retrieved"),
+            @ApiResponse(responseCode = "404", description = "Task not found"),
+            @ApiResponse(responseCode = "403", description = "User not authorized")
+    })
     @PreAuthorize("hasAnyRole('MANAGER', 'CONTRIBUTOR', 'USER')")
     @GetMapping("/duration/{taskId}")
     public ResponseEntity<String> getTaskDuration(@PathVariable Long taskId) {
@@ -108,12 +120,13 @@ public class TaskRestController {
 
     @Operation(summary = "Delete task")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "201", description = "Task delete", content = @Content),
-            @ApiResponse(responseCode = "409", description = "Task already exists", content = @Content)
+            @ApiResponse(responseCode = "200", description = "Task deleted successfully"),
+            @ApiResponse(responseCode = "404", description = "Task not found"),
+            @ApiResponse(responseCode = "403", description = "User not authorized")
     })
     @DeleteMapping("/deleteTask/{id}")
     @PreAuthorize("hasRole('MANAGER')")
-    public ResponseEntity<Void> deleteTask(@PathVariable Long id){
+    public ResponseEntity<Void> deleteTask(@PathVariable Long id) {
         taskHandler.deleteTask(id);
         return ResponseEntity.status(HttpStatus.OK).build();
     }

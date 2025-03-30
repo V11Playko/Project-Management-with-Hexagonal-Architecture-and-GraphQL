@@ -60,4 +60,9 @@ public class TaskUseCase implements ITaskServicePort {
     public void deleteTask(Long taskId) {
         taskPersistencePort.deleteTask(taskId);
     }
+
+    @Override
+    public List<TaskModel> searchTasksByKeyword(String keyword) {
+        return taskPersistencePort.searchTasksByKeyword(keyword);
+    }
 }

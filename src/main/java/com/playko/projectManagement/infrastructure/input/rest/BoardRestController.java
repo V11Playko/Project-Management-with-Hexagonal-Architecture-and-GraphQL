@@ -2,12 +2,14 @@ package com.playko.projectManagement.infrastructure.input.rest;
 
 
 import com.playko.projectManagement.application.dto.request.BoardRequestDto;
+import com.playko.projectManagement.application.dto.request.task.MoveTaskRequestDto;
 import com.playko.projectManagement.application.dto.response.BoardResponseDto;
 import com.playko.projectManagement.application.handler.IBoardHandler;
 import com.playko.projectManagement.application.mapper.response.IBoardResponseMapper;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -47,11 +49,17 @@ public class BoardRestController {
     })
     @PutMapping("/tasks/move")
     @PreAuthorize("hasAnyRole('MANAGER', 'USER')")
-    public ResponseEntity<Void> moveTask(@RequestParam Long taskId, @RequestParam Long targetColumnId) {
-        boardHandler.moveTask(taskId, targetColumnId);
+    public ResponseEntity<Void> moveTask(@Valid @RequestBody MoveTaskRequestDto requestDto) {
+        boardHandler.moveTask(requestDto.getTaskId(), requestDto.getTargetColumnId());
         return ResponseEntity.ok().build();
     }
 
+    @Operation(summary = "Save a new board")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "Board created successfully"),
+            @ApiResponse(responseCode = "400", description = "Invalid request data"),
+            @ApiResponse(responseCode = "403", description = "User not authorized")
+    })
     @PostMapping("/save")
     @PreAuthorize("hasRole('USER')")
     public ResponseEntity<Void> saveBoard(@RequestBody BoardRequestDto boardRequestDto) {

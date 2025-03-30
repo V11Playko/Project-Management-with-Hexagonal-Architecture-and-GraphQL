@@ -17,6 +17,6 @@ public interface ITaskServicePort {
     List<TaskModel> getTasksByFilters(Long boardId, TaskState state, TaskPriority priority);
     long calculateTaskDuration(Long taskId);
     void deleteTask(Long taskId);
-
+    List<TaskModel> searchTasksByKeyword(String keyword);
 
 }

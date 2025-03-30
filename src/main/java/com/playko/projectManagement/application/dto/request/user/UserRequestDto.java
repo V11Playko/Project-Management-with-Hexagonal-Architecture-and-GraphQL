@@ -20,7 +20,7 @@ public class UserRequestDto {
 
     @NotNull(message = "El DNI es obligatorio.")
     @Size(max = 10, message = "Maximo 10 caracteres.")
-    @Pattern(regexp = "^[\\d]{1,3}\\.?[\\d]{3,3}\\.?[\\d]{3,3}$")
+    @Pattern(regexp = "^[\\d]{1,3}\\.?[\\d]{3}\\.?[\\d]{3}\\.?[\\d]{1,3}$")
     private String dniNumber;
 
     @NotNull(message = "El celular es obligatorio.")

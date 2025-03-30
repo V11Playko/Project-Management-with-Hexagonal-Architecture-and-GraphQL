@@ -1,0 +1,28 @@
+type Task {
+    id: ID!
+    title: String!
+    description: String!
+    state: TaskState!
+    priority: TaskPriority!
+    limitDate: String
+    creationDate: String
+    projectId: ID!
+    boardColumnId: ID!
+    assignedUserId: ID
+}
+
+enum TaskState {
+    TODO
+    IN_PROGRESS
+    DONE
+}
+
+enum TaskPriority {
+    LOW
+    MEDIUM
+    HIGH
+}
+
+type Query {
+    searchTasksByKeyword(keyword: String!): [Task!]!
+}

@@ -2,6 +2,7 @@ package com.playko.projectManagement.infrastructure.input.rest;
 
 import com.playko.projectManagement.application.dto.request.project.ProjectDeadlineRequestDto;
 import com.playko.projectManagement.application.dto.request.project.ProjectRequestDto;
+import com.playko.projectManagement.application.dto.request.project.UserRestrictionRequestDto;
 import com.playko.projectManagement.application.dto.response.ProjectStatsDto;
 import com.playko.projectManagement.application.handler.IProjectHandler;
 import io.swagger.v3.oas.annotations.Operation;
@@ -74,30 +75,39 @@ public class ProjectRestController {
             @ApiResponse(responseCode = "404", description = "Stats not found"),
             @ApiResponse(responseCode = "403", description = "User not authorized")
     })
-    @PreAuthorize("hasRole('USER')")
+    @PreAuthorize("hasAnyRole('OBSERVER', 'USER')")
     @GetMapping("/stats/{projectId}")
     public ResponseEntity<ProjectStatsDto> getProjectStats(@PathVariable Long projectId) {
         ProjectStatsDto stats = projectHandler.getProjectStats(projectId);
         return ResponseEntity.ok(stats);
     }
 
-    @PreAuthorize("hasRole('OBSERVER')")
-    @GetMapping("/progress/{projectId}")
-    public ResponseEntity<ProjectStatsDto> getProjectProgress(@PathVariable Long projectId) {
-        ProjectStatsDto stats = projectHandler.getProjectStats(projectId);
-        return ResponseEntity.ok(stats);
-    }
 
+    @Operation(summary = "Restrict a user from a project")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "User restricted successfully"),
+            @ApiResponse(responseCode = "404", description = "Project or user not found"),
+            @ApiResponse(responseCode = "400", description = "Invalid request data")
+    })
     @PreAuthorize("hasRole('MANAGER')")
-    @PostMapping("/restrictUser/{projectId}")
-    public ResponseEntity<String> restrictUser(@PathVariable Long projectId, @RequestParam String email) {
-        projectHandler.restrictUserFromProject(projectId, email);
+    @PostMapping("/restrictUser")
+    public ResponseEntity<String> restrictUser(@Valid @RequestBody UserRestrictionRequestDto requestDto) {
+        projectHandler.restrictUserFromProject(requestDto.getProjectId(), requestDto.getEmail());
         return ResponseEntity.ok("Usuario restringido correctamente.");
     }
+
+    @Operation(summary = "Remove restriction from a user in a project")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "User restriction removed successfully"),
+            @ApiResponse(responseCode = "404", description = "Project or user not found"),
+            @ApiResponse(responseCode = "400", description = "Invalid request data")
+    })
     @PreAuthorize("hasRole('MANAGER')")
-    @DeleteMapping("/removeRestriction/{projectId}")
-    public ResponseEntity<String> removeRestriction(@PathVariable Long projectId, @RequestParam String email) {
-        projectHandler.removeUserRestriction(projectId, email);
+    @DeleteMapping("/removeRestriction")
+    public ResponseEntity<String> removeRestriction(@Valid @RequestBody UserRestrictionRequestDto requestDto) {
+        projectHandler.removeUserRestriction(requestDto.getProjectId(), requestDto.getEmail());
         return ResponseEntity.ok("Restricción eliminada correctamente.");
     }
+
+
 }

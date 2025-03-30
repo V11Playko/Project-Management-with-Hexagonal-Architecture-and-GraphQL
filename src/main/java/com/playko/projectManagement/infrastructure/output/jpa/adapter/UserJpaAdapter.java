@@ -42,11 +42,12 @@ public class UserJpaAdapter implements IUserPersistencePort {
     @Override
     public void saveUser(UserModel userModel) {
         RoleEntity role = roleRepository.findByName(String.valueOf(RoleEnum.ROLE_USER));
-        if (userRepository.findByEmail(userModel.getEmail()).isEmpty()) {
+        if (userRepository.findByEmail(userModel.getEmail()).isPresent()) {
             throw new UserAlreadyExistsException();
         }
         UserEntity userEntity = userEntityMapper.toEntity(userModel);
         userEntity.setRoleEntity(role);
+        userEntity.setTeam(null);
         userRepository.save(userEntity);
     }
 

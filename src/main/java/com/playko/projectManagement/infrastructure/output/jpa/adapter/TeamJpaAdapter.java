@@ -36,6 +36,9 @@ public class TeamJpaAdapter implements ITeamPersistencePort {
 
         List<UserEntity> updatedUsers = new ArrayList<>(teamEntity.getUsers());
         updatedUsers.add(userEntity);
+        userEntity.setTeam(teamEntity);
+        userRepository.save(userEntity);
+
         teamEntity.setUsers(updatedUsers);
         teamRepository.save(teamEntity);
 

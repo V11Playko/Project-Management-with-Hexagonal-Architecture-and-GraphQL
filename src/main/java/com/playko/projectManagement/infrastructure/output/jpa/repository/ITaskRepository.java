@@ -20,4 +20,6 @@ public interface ITaskRepository extends JpaRepository<TaskEntity, Long> {
     List<TaskEntity> findByBoardColumn_Board_IdAndState(Long boardId, TaskState state);
     List<TaskEntity> findByBoardColumn_Board_IdAndPriority(Long boardId, TaskPriority priority);
     List<TaskEntity> findByBoardColumn_Board_IdAndStateAndPriority(Long boardId, TaskState state, TaskPriority priority);
+    @Query("SELECT t FROM TaskEntity t WHERE LOWER(t.title) LIKE LOWER(CONCAT('%', :keyword, '%')) OR LOWER(t.description) LIKE LOWER(CONCAT('%', :keyword, '%'))")
+    List<TaskEntity> findByKeyword(@Param("keyword") String keyword);
 }

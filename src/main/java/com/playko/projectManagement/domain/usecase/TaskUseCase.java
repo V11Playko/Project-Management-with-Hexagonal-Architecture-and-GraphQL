@@ -5,7 +5,9 @@ import com.playko.projectManagement.domain.model.TaskModel;
 import com.playko.projectManagement.domain.spi.ITaskPersistencePort;
 import com.playko.projectManagement.shared.enums.TaskPriority;
 import com.playko.projectManagement.shared.enums.TaskState;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -64,5 +66,10 @@ public class TaskUseCase implements ITaskServicePort {
     @Override
     public List<TaskModel> searchTasksByKeyword(String keyword) {
         return taskPersistencePort.searchTasksByKeyword(keyword);
+    }
+
+    @Override
+    public String storeFile(MultipartFile file) throws Exception {
+        return taskPersistencePort.storeFile(file);
     }
 }

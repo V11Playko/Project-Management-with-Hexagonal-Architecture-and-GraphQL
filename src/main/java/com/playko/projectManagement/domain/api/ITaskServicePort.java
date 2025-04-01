@@ -3,7 +3,9 @@ package com.playko.projectManagement.domain.api;
 import com.playko.projectManagement.domain.model.TaskModel;
 import com.playko.projectManagement.shared.enums.TaskPriority;
 import com.playko.projectManagement.shared.enums.TaskState;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -18,5 +20,6 @@ public interface ITaskServicePort {
     long calculateTaskDuration(Long taskId);
     void deleteTask(Long taskId);
     List<TaskModel> searchTasksByKeyword(String keyword);
+    String storeFile(MultipartFile file) throws Exception;
 
 }

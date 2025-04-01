@@ -59,6 +59,8 @@ public class TaskEntity {
     @JoinColumn(name = "assigned_user_id")
     private UserEntity assignedUser;
 
+    private List<String> attachedFiles;
+
     @PrePersist
     protected void onCreate() {
         this.creationDate = LocalDate.now(); // Se inicializa con la fecha actual

@@ -22,8 +22,9 @@ public class TaskModel {
     private BoardColumnModel boardColumn;
     private List<SubTaskModel> subtasks;
     private UserModel assignedUserId;
+    private List<String> attachedFiles;
 
-    public TaskModel(Long id, String title, String description, TaskState state, TaskPriority priority, LocalDate limitDate, LocalDate creationDate, ProjectModel project, BoardColumnModel boardColumn, List<SubTaskModel> subtasks, UserModel assignedUserId) {
+    public TaskModel(Long id, String title, String description, TaskState state, TaskPriority priority, LocalDate limitDate, LocalDate creationDate, ProjectModel project, BoardColumnModel boardColumn, List<SubTaskModel> subtasks, UserModel assignedUserId, List<String> attachedFiles) {
         this.id = id;
         this.title = title;
         this.description = description;
@@ -35,14 +36,7 @@ public class TaskModel {
         this.boardColumn = boardColumn;
         this.subtasks = subtasks;
         this.assignedUserId = assignedUserId;
-    }
-
-    public LocalDate getCreationDate() {
-        return creationDate;
-    }
-
-    public void setCreationDate(LocalDate creationDate) {
-        this.creationDate = creationDate;
+        this.attachedFiles = attachedFiles;
     }
 
     public TaskModel() {
@@ -97,6 +91,14 @@ public class TaskModel {
         this.limitDate = limitDate;
     }
 
+    public LocalDate getCreationDate() {
+        return creationDate;
+    }
+
+    public void setCreationDate(LocalDate creationDate) {
+        this.creationDate = creationDate;
+    }
+
     public ProjectModel getProject() {
         return project;
     }
@@ -127,5 +129,13 @@ public class TaskModel {
 
     public void setAssignedUserId(UserModel assignedUserId) {
         this.assignedUserId = assignedUserId;
+    }
+
+    public List<String> getAttachedFiles() {
+        return attachedFiles;
+    }
+
+    public void setAttachedFiles(List<String> attachedFiles) {
+        this.attachedFiles = attachedFiles;
     }
 }

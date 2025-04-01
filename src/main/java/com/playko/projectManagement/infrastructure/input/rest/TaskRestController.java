@@ -23,7 +23,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -129,5 +131,24 @@ public class TaskRestController {
     public ResponseEntity<Void> deleteTask(@PathVariable Long id) {
         taskHandler.deleteTask(id);
         return ResponseEntity.status(HttpStatus.OK).build();
+    }
+
+    @Operation(summary = "Upload a picture")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "File uploaded successfully"),
+            @ApiResponse(responseCode = "400", description = "No file provided"),
+            @ApiResponse(responseCode = "500", description = "Error uploading file")
+    })
+    @PostMapping("/picture")
+    public ResponseEntity<String> uploadPic(@RequestParam("file") MultipartFile file){
+        if (file.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("No file provided");
+        }
+        try {
+            String filePath = taskHandler.storeFile(file);
+            return ResponseEntity.ok("File uploaded successfully: " + filePath);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error uploading file: " + e.getMessage());
+        }
     }
 }

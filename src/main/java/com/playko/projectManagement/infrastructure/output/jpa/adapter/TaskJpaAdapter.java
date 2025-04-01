@@ -29,13 +29,21 @@ import com.playko.projectManagement.shared.enums.TaskPriority;
 import com.playko.projectManagement.shared.enums.TaskState;
 import lombok.RequiredArgsConstructor;
 import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
@@ -241,6 +249,43 @@ public class TaskJpaAdapter implements ITaskPersistencePort {
 
         List<TaskEntity> taskEntities = taskRepository.findByKeyword(keyword);
         return taskEntityMapper.toDtoList(taskEntities);
+    }
+
+    @Override
+    public String storeFile(MultipartFile file) throws Exception {
+        try {
+            String fileName = UUID.randomUUID().toString();
+            byte[] bytes = file.getBytes();
+            String fileOriginalName = file.getOriginalFilename();
+
+            long fileSize = file.getSize();
+            long maxFileSize = 5 * 1024 * 1024;
+
+            if (fileSize > maxFileSize) {
+                return "File size must be less then or equal 5MB";
+            }
+
+            if (
+                    !fileOriginalName.endsWith(".jpg") &
+                    !fileOriginalName.endsWith(".jpeg") &
+                    !fileOriginalName.endsWith(".png")
+            ) {
+                return "Only JPG, JPEG, PNG files are allowed!";
+            }
+            String fileExtension = fileOriginalName.substring(fileOriginalName.lastIndexOf("."));
+            String newFileName = fileName + fileExtension;
+
+            File folder = new File("%USERPROFILE%\\Downloads");
+            if (!folder.exists()) {
+                folder.mkdir();
+            }
+            Path path = Paths.get("%USERPROFILE%\\Downloads" + newFileName);
+            Files.write(path, bytes);
+            return "File upload seccesfully!!";
+
+        } catch (Exception e){
+            throw new Exception(e.getMessage());
+        }
     }
 
     @Scheduled(cron = "0 0 8 * * ?", zone = "America/New_York")

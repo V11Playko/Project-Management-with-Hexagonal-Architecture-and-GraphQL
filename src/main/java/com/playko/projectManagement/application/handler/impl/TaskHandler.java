@@ -14,7 +14,9 @@ import com.playko.projectManagement.shared.enums.TaskState;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 
 @Service
@@ -75,5 +77,10 @@ public class TaskHandler implements ITaskHandler {
     @Override
     public List<TaskResponseDto> searchTasksByKeyword(String keyword) {
         return taskRequestMapper.toDtoList(taskServicePort.searchTasksByKeyword(keyword));
+    }
+
+    @Override
+    public String storeFile(MultipartFile file) throws Exception {
+        return taskServicePort.storeFile(file);
     }
 }

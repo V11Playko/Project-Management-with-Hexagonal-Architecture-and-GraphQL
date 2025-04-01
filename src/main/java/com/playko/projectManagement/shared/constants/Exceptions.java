@@ -46,5 +46,6 @@ public class Exceptions {
     public static final String USER_NOT_RESTRICTED_MESSAGE = "El usuario indicado no esta restringido.";
     public static final String PROJECTS_NOT_FOUND_MESSAGE = "No hay proyectos asignados para enviar el resumen.";
     public static final String INVALID_KEYWORD_MESSAGE = "La palabra clave no puede estar vacía.";
+    public static final String FILE_NOT_FOUND_MESSAGE = "File not found.";
 
 }

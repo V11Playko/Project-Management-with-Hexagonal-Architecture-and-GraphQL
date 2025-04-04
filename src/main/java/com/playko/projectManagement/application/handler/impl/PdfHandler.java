@@ -1,5 +1,6 @@
 package com.playko.projectManagement.application.handler.impl;
 
+import com.playko.projectManagement.application.dto.request.team.TeamPerformanceReportDto;
 import com.playko.projectManagement.application.handler.IPdfHandler;
 import com.playko.projectManagement.domain.api.IPdfServicePort;
 import jakarta.transaction.Transactional;
@@ -17,5 +18,10 @@ public class PdfHandler implements IPdfHandler {
     @Override
     public ByteArrayOutputStream generatePdf(Long projectId) throws IOException {
         return pdfServicePort.generatePdf(projectId);
+    }
+
+    @Override
+    public byte[] generatePerformanceReportPdf(Long teamId) throws IOException {
+        return pdfServicePort.generatePerformanceReportPdf(teamId);
     }
 }

@@ -2,6 +2,7 @@ package com.playko.projectManagement.infrastructure.configuration;
 
 import com.playko.projectManagement.application.handler.IEmailHandler;
 import com.playko.projectManagement.application.handler.IProjectHandler;
+import com.playko.projectManagement.application.handler.ITeamHandler;
 import com.playko.projectManagement.application.handler.impl.EmailHandler;
 import com.playko.projectManagement.domain.api.IBoardColumnServicePort;
 import com.playko.projectManagement.domain.api.IBoardServicePort;
@@ -109,8 +110,9 @@ public class BeanConfiguration {
     }
 
     @Bean
-    public ITeamPersistencePort teamPersistencePort(ITeamRepository teamRepository, ITeamEntityMapper teamEntityMapper, IUserRepository userRepository, EmailHandler emailHandler) {
-        return new TeamJpaAdapter(teamRepository, teamEntityMapper, userRepository, emailHandler);
+    public ITeamPersistencePort teamPersistencePort(ITeamRepository teamRepository, ITeamEntityMapper teamEntityMapper, IUserRepository userRepository,
+                                                    EmailHandler emailHandler, ITaskRepository taskRepository) {
+        return new TeamJpaAdapter(teamRepository, teamEntityMapper, userRepository, emailHandler, taskRepository);
     }
 
     @Bean
@@ -196,8 +198,8 @@ public class BeanConfiguration {
     }
 
     @Bean
-    public IPdfPersistencePort pdfPersistencePort(IProjectHandler projectHandler) {
-        return new PdfJpaAdapter(projectHandler);
+    public IPdfPersistencePort pdfPersistencePort(IProjectHandler projectHandler, ITeamHandler teamHandler) {
+        return new PdfJpaAdapter(projectHandler, teamHandler);
     }
 
     @Bean

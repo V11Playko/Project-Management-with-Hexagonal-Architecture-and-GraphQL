@@ -1,5 +1,6 @@
 package com.playko.projectManagement.application.handler.impl;
 
+import com.playko.projectManagement.application.dto.request.team.TeamPerformanceReportDto;
 import com.playko.projectManagement.application.dto.request.team.TeamRequestDto;
 import com.playko.projectManagement.application.handler.ITeamHandler;
 import com.playko.projectManagement.application.mapper.request.ITeamRequestMapper;
@@ -29,5 +30,10 @@ public class TeamHandler implements ITeamHandler {
     @Override
     public void removeUserFromTeam(Long teamId, String emailUser) {
         teamServicePort.removeUserFromTeam(teamId, emailUser);
+    }
+
+    @Override
+    public TeamPerformanceReportDto generatePerformanceReport(Long teamId) {
+        return teamServicePort.generatePerformanceReport(teamId);
     }
 }

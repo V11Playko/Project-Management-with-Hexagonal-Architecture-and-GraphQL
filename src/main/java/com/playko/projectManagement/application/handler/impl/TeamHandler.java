@@ -1,5 +1,6 @@
 package com.playko.projectManagement.application.handler.impl;
 
+import com.playko.projectManagement.application.dto.request.team.TeamEmailRequestDto;
 import com.playko.projectManagement.application.dto.request.team.TeamPerformanceReportDto;
 import com.playko.projectManagement.application.dto.request.team.TeamRequestDto;
 import com.playko.projectManagement.application.handler.ITeamHandler;
@@ -35,5 +36,10 @@ public class TeamHandler implements ITeamHandler {
     @Override
     public TeamPerformanceReportDto generatePerformanceReport(Long teamId) {
         return teamServicePort.generatePerformanceReport(teamId);
+    }
+
+    @Override
+    public void sendEmailToTeam(TeamEmailRequestDto emailRequest) {
+        teamServicePort.sendEmailToTeam(emailRequest);
     }
 }

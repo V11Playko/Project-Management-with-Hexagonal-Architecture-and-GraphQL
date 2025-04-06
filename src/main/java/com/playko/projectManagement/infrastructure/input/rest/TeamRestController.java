@@ -2,6 +2,7 @@ package com.playko.projectManagement.infrastructure.input.rest;
 
 import com.playko.projectManagement.application.dto.request.team.AddUserToTeamRequestDto;
 import com.playko.projectManagement.application.dto.request.team.RemoveUserFromTeamRequestDto;
+import com.playko.projectManagement.application.dto.request.team.TeamEmailRequestDto;
 import com.playko.projectManagement.application.dto.request.team.TeamPerformanceReportDto;
 import com.playko.projectManagement.application.dto.request.team.TeamRequestDto;
 import com.playko.projectManagement.application.handler.ITeamHandler;
@@ -76,6 +77,19 @@ public class TeamRestController {
     @GetMapping("/performance/{teamId}")
     public ResponseEntity<TeamPerformanceReportDto> getTeamPerformance(@PathVariable Long teamId) {
         return ResponseEntity.ok(teamHandler.generatePerformanceReport(teamId));
+    }
+
+
+    @Operation(summary = "Send a message to all team members by email")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Emails sent successfully"),
+            @ApiResponse(responseCode = "404", description = "Team not found")
+    })
+    @PreAuthorize("hasAnyRole('USER', 'MANAGER')")
+    @PostMapping("/sendEmail")
+    public ResponseEntity<String> sendTeamEmail(@RequestBody TeamEmailRequestDto request) {
+        teamHandler.sendEmailToTeam(request);
+        return ResponseEntity.ok("Emails sent to team members successfully.");
     }
 
 }

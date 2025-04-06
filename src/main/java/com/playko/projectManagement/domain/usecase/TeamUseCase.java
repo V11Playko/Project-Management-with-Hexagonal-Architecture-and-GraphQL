@@ -1,5 +1,6 @@
 package com.playko.projectManagement.domain.usecase;
 
+import com.playko.projectManagement.application.dto.request.team.TeamEmailRequestDto;
 import com.playko.projectManagement.application.dto.request.team.TeamPerformanceReportDto;
 import com.playko.projectManagement.domain.api.ITeamServicePort;
 import com.playko.projectManagement.domain.model.TeamModel;
@@ -35,5 +36,10 @@ public class TeamUseCase implements ITeamServicePort {
     @Override
     public TeamPerformanceReportDto generatePerformanceReport(Long teamId) {
         return teamPersistencePort.generatePerformanceReport(teamId);
+    }
+
+    @Override
+    public void sendEmailToTeam(TeamEmailRequestDto emailRequest) {
+        teamPersistencePort.sendEmailToTeam(emailRequest);
     }
 }

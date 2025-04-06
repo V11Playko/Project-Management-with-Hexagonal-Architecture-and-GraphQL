@@ -25,6 +25,7 @@ public class EmailJpaAdapter implements IEmailPersistencePort {
 
             helper.setTo(email.getDestinatario());
             helper.setSubject(email.getAsunto());
+            helper.setReplyTo(email.getRemitente());
 
             Context context = new Context();
             context.setVariable("message", email.getMensaje());

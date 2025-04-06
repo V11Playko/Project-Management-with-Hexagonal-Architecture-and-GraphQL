@@ -14,4 +14,5 @@ public class EmailRequestDto {
     private String destinatario;
     private String asunto;
     private String mensaje;
+    private String remitente;
 }

@@ -7,7 +7,6 @@ import com.playko.projectManagement.shared.enums.TaskPriority;
 import com.playko.projectManagement.shared.enums.TaskState;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -72,4 +71,12 @@ public class TaskUseCase implements ITaskServicePort {
     public String storeFile(MultipartFile file) throws Exception {
         return taskPersistencePort.storeFile(file);
     }
+
+    // Es para descargar un .ics para luego exportar en Calendar de google u otros
+    @Override
+    public String generateIcsForTasks() {
+        return taskPersistencePort.generateIcsForTasks();
+    }
+
+
 }

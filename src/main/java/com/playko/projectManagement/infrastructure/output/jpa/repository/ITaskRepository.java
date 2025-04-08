@@ -23,4 +23,5 @@ public interface ITaskRepository extends JpaRepository<TaskEntity, Long> {
     @Query("SELECT t FROM TaskEntity t WHERE LOWER(t.title) LIKE LOWER(CONCAT('%', :keyword, '%')) OR LOWER(t.description) LIKE LOWER(CONCAT('%', :keyword, '%'))")
     List<TaskEntity> findByKeyword(@Param("keyword") String keyword);
     List<TaskEntity> findByAssignedUser_Team_Id(Long teamId);
+    List<TaskEntity> findAllByAssignedUserEmail(String email);
 }

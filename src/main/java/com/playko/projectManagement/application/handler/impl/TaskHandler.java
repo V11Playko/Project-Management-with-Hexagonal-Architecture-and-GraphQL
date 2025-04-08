@@ -16,7 +16,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
 import java.util.List;
 
 @Service
@@ -83,4 +82,10 @@ public class TaskHandler implements ITaskHandler {
     public String storeFile(MultipartFile file) throws Exception {
         return taskServicePort.storeFile(file);
     }
+
+    @Override
+    public String generateIcsForTasks() {
+        return taskServicePort.generateIcsForTasks();
+    }
+
 }

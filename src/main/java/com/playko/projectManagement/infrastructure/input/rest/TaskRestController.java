@@ -13,7 +13,10 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -27,6 +30,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 @RestController
@@ -150,5 +154,25 @@ public class TaskRestController {
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error uploading file: " + e.getMessage());
         }
+    }
+
+    @Operation(summary = "Exporta tus tareas a un archivo .ics (calendario)")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Archivo .ics generado correctamente"),
+            @ApiResponse(responseCode = "401", description = "No autorizado")
+    })
+    @PreAuthorize("hasAnyRole('USER', 'MANAGER')")
+    @GetMapping("/calendar/export")
+    public ResponseEntity<ByteArrayResource> exportTasksToIcs() {
+        String icsContent = taskHandler.generateIcsForTasks();
+
+        byte[] icsBytes = icsContent.getBytes(StandardCharsets.UTF_8);
+        ByteArrayResource resource = new ByteArrayResource(icsBytes);
+
+        return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=mis_tareas.ics")
+                .contentType(MediaType.parseMediaType("text/calendar"))
+                .contentLength(icsBytes.length)
+                .body(resource);
     }
 }

@@ -19,7 +19,6 @@ public interface ITaskEntityMapper {
 
     List<TaskModel> toDtoList(List<TaskEntity> taskEntities);
 
-
     @Mapping(target = "project.id", source = "project.id")
     @Mapping(target = "boardColumn.id", source = "boardColumn.id")
     @Mapping(target = "assignedUserId.id", source = "assignedUser.id")

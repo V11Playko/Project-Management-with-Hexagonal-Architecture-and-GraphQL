@@ -32,11 +32,9 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
-import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -288,6 +286,34 @@ public class TaskJpaAdapter implements ITaskPersistencePort {
         }
     }
 
+    // Es para descargar un .ics para luego exportar en Calendar de google u otros
+    @Override
+    public String generateIcsForTasks() {
+        String correo = securityUtils.obtenerCorreoDelToken();
+
+        List<TaskEntity> tasks = taskRepository.findAllByAssignedUserEmail(correo);
+
+        StringBuilder sb = new StringBuilder();
+        sb.append("BEGIN:VCALENDAR\n");
+        sb.append("VERSION:2.0\n");
+        sb.append("PRODID:-//TaskSync//EN\n");
+
+        for (TaskEntity task : tasks) {
+            if (task.getLimitDate() != null) {
+                sb.append("BEGIN:VEVENT\n");
+                sb.append("UID:task-").append(task.getId()).append("@taskapp.com\n");
+                sb.append("SUMMARY:").append(escapeIcsText(task.getTitle())).append("\n");
+                sb.append("DESCRIPTION:").append(escapeIcsText(task.getDescription() != null ? task.getDescription() : "")).append("\n");
+                sb.append("DTSTART;VALUE=DATE:").append(task.getLimitDate().toString().replace("-", "")).append("\n");
+                sb.append("DTEND;VALUE=DATE:").append(task.getLimitDate().plusDays(1).toString().replace("-", "")).append("\n");
+                sb.append("END:VEVENT\n");
+            }
+        }
+
+        sb.append("END:VCALENDAR");
+        return sb.toString();
+    }
+
     @Scheduled(cron = "0 0 8 * * ?", zone = "America/New_York")
     public void sendTaskReminders() {
         ZonedDateTime now = ZonedDateTime.now(ZoneId.of("America/New_York"));
@@ -304,5 +330,8 @@ public class TaskJpaAdapter implements ITaskPersistencePort {
                     emailRequestDto.setMensaje("La tarea '" + task.getTitle() + "' vence el " + task.getLimitDate() + ".");
                     emailHandler.sendEmail(emailRequestDto);
                 });
+    }
+    private String escapeIcsText(String input) {
+        return input.replace("\n", "\\n").replace("\r", "").replace("\"", "'");
     }
 }
